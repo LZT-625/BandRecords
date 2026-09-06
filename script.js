@@ -1,9 +1,11 @@
 const eventList = document.querySelector('#event-list');
+const upcomingEvents = document.querySelector('#upcoming-events');
+const rankingList = document.querySelector('#ranking-list');
 const eventModal = document.querySelector('#event-modal');
 const modalTitle = document.querySelector('#modal-title');
 const modalContent = document.querySelector('#modal-content');
 const logoImage = document.querySelector('.brand-logo-image');
-const logoPlaceholder = document.querySelector('.brand-logo-placeholder');
+const logoFallback = document.querySelector('.brand-logo-fallback');
 
 function formatDate(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
@@ -18,9 +20,16 @@ function formatDate(dateString) {
 
 function formatEventDateTime(event) {
   const dateText = event.date ? formatDate(event.date) : '日期未設定';
+
+  if (event.end_date && event.end_date !== event.date) {
+    const endDateText = formatDate(event.end_date).replace(/^\d{4}\//, '');
+    return `${dateText}–${endDateText}`;
+  }
+
   if (event.is_datetime && event.time) {
     return event.end_time ? `${dateText} ${event.time}–${event.end_time}` : `${dateText} ${event.time}`;
   }
+
   return dateText;
 }
 
@@ -44,7 +53,10 @@ function buildGoogleMapsUrl(address) {
 }
 
 function renderSongList(songs) {
-  const list = Array.isArray(songs) ? songs.filter(song => song && song.title).slice(0, 20) : [];
+  const list = Array.isArray(songs)
+    ? songs.filter(song => song && song.title).slice(0, 20)
+    : [];
+
   if (!list.length) {
     return '<p class="detail-empty">目前沒有歌單資料。</p>';
   }
@@ -146,46 +158,136 @@ function renderEvents(events) {
   const sortedEvents = [...events].sort((a, b) => String(a.date).localeCompare(String(b.date)));
   eventList.innerHTML = '';
 
-  if (!sortedEvents.length) {
-    eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
-    return;
-  }
-
   sortedEvents.forEach(event => {
     eventList.appendChild(renderEvent(event));
   });
 }
 
-async function loadEvents() {
-  if (!eventList) return;
+function renderUpcomingEvents(events) {
+  if (!upcomingEvents) return;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const nextEvents = [...events]
+    .filter(event => {
+      const date = new Date(`${event.date}T00:00:00`);
+      return !Number.isNaN(date.getTime()) && date >= today;
+    })
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)))
+    .slice(0, 3);
+
+  if (!nextEvents.length) {
+    upcomingEvents.innerHTML = '<p class="section-empty">目前沒有即將到來的演出。</p>';
+    return;
+  }
+
+  upcomingEvents.innerHTML = nextEvents.map((event, index) => `
+    <article class="upcoming-event-card" data-event-index="${index}">
+      <div>
+        <div class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</div>
+        <h3>${escapeHtml(event.title || '未命名演出')}</h3>
+        <div class="upcoming-event-meta">
+          <span>${escapeHtml(cleanCity(event.city))}</span>
+          <span>${escapeHtml(event.venue || '地點未設定')}</span>
+          <span>${escapeHtml(event.type || '演出')}</span>
+        </div>
+      </div>
+      <div>
+        <span class="upcoming-event-status">${escapeHtml(event.status || '未設定')}</span>
+      </div>
+    </article>
+  `).join('');
+
+  upcomingEvents.querySelectorAll('[data-event-index]').forEach((card, index) => {
+    card.addEventListener('click', () => openEvent(nextEvents[index]));
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openEvent(nextEvents[index]);
+      }
+    });
+  });
+}
+
+function renderSongRanking(events) {
+  if (!rankingList) return;
+
+  const songfulEvents = events.filter(event => Array.isArray(event.songs) && event.songs.length);
+  const counts = new Map();
+
+  songfulEvents.forEach(event => {
+    const seenInEvent = new Set();
+    event.songs.forEach(song => {
+      if (!song || !song.title || seenInEvent.has(song.title)) return;
+      seenInEvent.add(song.title);
+      counts.set(song.title, (counts.get(song.title) || 0) + 1);
+    });
+  });
+
+  if (!songfulEvents.length || !counts.size) {
+    rankingList.innerHTML = '<p class="section-empty">目前沒有足夠的歌單資料可計算。</p>';
+    return;
+  }
+
+  const ranking = [...counts.entries()]
+    .map(([title, count]) => ({ title, count, percent: (count / songfulEvents.length) * 100 }))
+    .sort((a, b) => b.percent - a.percent || a.title.localeCompare(b.title, 'zh-Hant'));
+
+  rankingList.innerHTML = ranking.map((song, index) => `
+    <div class="ranking-item">
+      <span class="ranking-number">${String(index + 1).padStart(2, '0')}</span>
+      <span class="ranking-title">${escapeHtml(song.title)}</span>
+      <span class="ranking-percent">${song.percent.toFixed(0)}%</span>
+      <div class="ranking-bar" aria-hidden="true">
+        <div class="ranking-fill" style="width: ${song.percent.toFixed(2)}%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=6`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=7`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
     if (!Array.isArray(events)) throw new Error('演出資料格式不是陣列');
 
     renderEvents(events);
+    renderUpcomingEvents(events);
+    renderSongRanking(events);
   } catch (error) {
     console.error(error);
-    eventList.innerHTML = '<p>演出資料暫時無法載入。請稍後重新整理頁面。</p>';
+    const message = '<p>演出資料暫時無法載入。請稍後重新整理頁面。</p>';
+    if (eventList) eventList.innerHTML = message;
+    if (upcomingEvents) upcomingEvents.innerHTML = message;
+    if (rankingList) rankingList.innerHTML = message;
   }
 }
 
 function setupLogo() {
-  if (!logoImage || !logoPlaceholder) return;
+  if (!logoImage || !logoFallback) return;
 
+  const showFallback = () => {
+    logoImage.hidden = true;
+    logoFallback.hidden = false;
+  };
+
+  logoFallback.hidden = true;
+  logoImage.hidden = false;
+  logoImage.addEventListener('error', showFallback);
   logoImage.addEventListener('load', () => {
-    logoImage.classList.add('is-loaded');
-    logoPlaceholder.classList.add('is-hidden');
+    logoImage.hidden = false;
+    logoFallback.hidden = true;
   });
 
-  logoImage.addEventListener('error', () => {
-    logoImage.classList.remove('is-loaded');
-    logoPlaceholder.classList.remove('is-hidden');
-  });
+  if (logoImage.complete && logoImage.naturalWidth === 0) {
+    showFallback();
+  }
 }
 
 setupLogo();
