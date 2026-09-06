@@ -22,16 +22,25 @@
   <main class="page-main" id="2026recap">
     <div class="section-shell page-shell">
       <h1 class="page-title">2026 年度回顧</h1>
-      <p class="section-description">年度演出資料與統計。此頁預留之後接入完整 Notion 年度統計與年度歌曲資料。</p>
+      <p class="section-description">年度演出資料與統計。年度歌曲演出機率也集中於本頁呈現。</p>
+
       <div class="recap-grid">
         <article class="recap-card"><span>第一季</span><strong>13</strong><small>場演出</small></article>
         <article class="recap-card"><span>第二季</span><strong>33</strong><small>場演出</small></article>
         <article class="recap-card"><span>第三季</span><strong>20</strong><small>場演出</small></article>
         <article class="recap-card"><span>第四季</span><strong>6</strong><small>場演出</small></article>
       </div>
+
+      <section class="recap-section" aria-labelledby="recap-ranking-title">
+        <h2 id="recap-ranking-title" class="recap-section-title">年度歌曲演出機率</h2>
+        <p class="section-description">依目前已匯入的年度演出歌單資料計算歌曲出現比例，資料增加時會重新計算。</p>
+        <div id="ranking-list" class="ranking-list"></div>
+      </section>
     </div>
   </main>
 
   <footer class="site-footer"><p>BandRecords · 跟館青出去走一走</p></footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
