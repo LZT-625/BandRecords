@@ -8,18 +8,20 @@
     "status": "有去",
     "type": "商演",
     "source": "https://www.instagram.com/p/DSfCBtxEpYA",
-    "notion_url": "https://app.notion.com/p/2e39334e81cc809385c3c1f620bde120"
+    "notion_url": "https://app.notion.com/p/2e39334e81cc809385c3c1f620bde120",
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc80958f95ce0c261f14af"
   },
   {
     "title": "「嘿，我找到你了」巡迴講唱會 華南高商站",
     "date": "2026-01-14",
     "time": null,
     "city": "嘉義",
-    "venue": "華南高商",
+    "venue": "東區｜華南高商",
     "status": "沒去",
     "type": "校園講唱會",
     "source": "https://www.instagram.com/p/DQWiTgKkvmJ",
-    "notion_url": "https://app.notion.com/p/2e39334e81cc80198e83fd34a0209032"
+    "notion_url": "https://app.notion.com/p/2e39334e81cc80198e83fd34a0209032",
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc8057a5c8db05934c07a4"
   },
   {
     "title": "「嘿，我找到你了」巡迴講唱會 台科大站",
@@ -30,6 +32,7 @@
     "status": "沒去",
     "type": "校園講唱會",
     "source": "https://www.instagram.com/p/DQWiTgKkvmJ",
-    "notion_url": "https://app.notion.com/p/2e39334e81cc8031a436e594f6270e82"
+    "notion_url": "https://app.notion.com/p/2e39334e81cc8031a436e594f6270e82",
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc807e9ca7cdf0e2ec99c7"
   }
 ]
