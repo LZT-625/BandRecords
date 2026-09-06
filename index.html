@@ -12,8 +12,7 @@
     <nav class="navbar" aria-label="主要導覽">
       <a class="brand" href="index.html" aria-label="回到首頁">
         <div class="brand-logo">
-          <img class="brand-logo-image" src="img/logo/GGteens_Logo_BK.png" alt="GGteens">
-          <span class="brand-logo-fallback" aria-hidden="true">GGteens</span>
+          <span class="brand-logo-fallback">GGteens</span>
         </div>
       </a>
       <div class="nav-spacer" aria-hidden="true"></div>
@@ -66,6 +65,44 @@
         <h2 class="section-title">年度歌曲演出機率</h2>
         <p class="section-description">依目前已匯入的年度演出歌單資料計算歌曲出現比例，資料增加時會重新計算。</p>
         <div id="ranking-list" class="ranking-list"></div>
+
+        <div class="home-works-preview" aria-labelledby="latest-works-title">
+          <div class="section-heading-row">
+            <div>
+              <p class="section-kicker">LATEST RELEASES</p>
+              <h2 id="latest-works-title" class="section-title section-title--small">最新作品</h2>
+            </div>
+            <a class="section-link" href="song_list.html">查看歌曲資料庫 →</a>
+          </div>
+          <div class="works-grid">
+            <article class="work-card">
+              <h4>最新發行單曲</h4>
+              <iframe
+                class="spotify-embed"
+                src="https://open.spotify.com/embed/track/2ObQBIEZqWlpjHOCIquJpc?utm_source=generator"
+                width="100%"
+                height="152"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="Spotify 最新發行單曲">
+              </iframe>
+            </article>
+            <article class="work-card">
+              <h4>最新發行EP/專輯</h4>
+              <iframe
+                class="spotify-embed"
+                src="https://open.spotify.com/embed/album/1Fs6PqQFvSh8ovcWbeMOaq?utm_source=generator"
+                width="100%"
+                height="352"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="Spotify 最新發行EP／專輯">
+              </iframe>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
   </main>
