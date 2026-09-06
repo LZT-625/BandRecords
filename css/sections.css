@@ -1,6 +1,5 @@
 #mainpage,
-#latest_event,
-#song_ranking {
+#latest_event {
   width: 100%;
   min-height: 100%;
   position: relative;
@@ -10,98 +9,128 @@
 #mainpage {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 34%;
+  grid-template-columns: 75% 25%;
   align-items: stretch;
   overflow: hidden;
-  background-color: #d8d3c8;
-  background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url("../img/mainpage/latest-promo.jpg");
+  background: #d8d3c8;
+}
+
+.home {
+  min-width: 0;
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background-image: linear-gradient(rgba(0,0,0,0.14), rgba(0,0,0,0.14)), url("../img/mainpage/Main_BG.jpg");
   background-size: cover;
   background-position: center;
-}
-
-.mainpage-copy {
-  align-self: end;
-  padding: 0 0 96px 8vw;
   color: #ffffff;
-  max-width: 760px;
 }
 
-.mainpage-copy h1 {
-  margin-bottom: 12px;
-  font-size: clamp(48px, 7vw, 92px);
+.home-copy {
+  width: 100%;
+  padding: 0 6vw 8vh;
+}
+
+.home-copy h1 {
+  max-width: 65%;
+  margin: 0 0 14px;
+  font-size: clamp(42px, 5.4vw, 82px);
   font-weight: 900;
+  line-height: 1.15;
   letter-spacing: -0.03em;
 }
 
-.mainpage-copy p {
+.home-copy p {
+  max-width: 35%;
   margin: 0;
-  font-size: clamp(20px, 2vw, 30px);
+  font-size: clamp(20px, 1.9vw, 30px);
   font-weight: 700;
+  line-height: 1.35;
 }
 
-.recent-news-panel {
+.news {
+  min-width: 0;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 22px;
-  padding: 64px 5vw;
-  background: rgba(28, 28, 28, 0.92);
+  padding: 48px 3vw;
+  background: #202020;
   color: #ffffff;
 }
 
-.recent-news-panel h2 {
-  margin: 0;
-  font-size: 40px;
-}
-
-.news-list,
-.upcoming-events-list,
-.ranking-list,
-.works-grid {
-  display: grid;
+.news h2 {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.2;
 }
 
 .news-list {
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
 }
 
 .news-card {
   padding: 18px 0;
-  border-top: 1px solid rgba(255,255,255,0.25);
+  border-top: 1px solid rgba(255,255,255,0.28);
 }
 
 .news-card h3 {
-  margin-bottom: 6px;
-  font-size: 20px;
+  margin: 0 0 6px;
+  font-size: clamp(18px, 1.7vw, 24px);
+  line-height: 1.35;
 }
 
 .news-card p {
   margin: 0;
   color: rgba(255,255,255,0.78);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 #latest_event {
   min-height: 100vh;
-  padding: 96px 7vw;
+  padding: 10px 7vw;
   background: var(--section-light);
 }
 
+.latest-event-shell {
+  min-height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+}
+
+.latest-event-heading {
+  margin-bottom: 10px;
+  padding-top: 0;
+  flex: 0 0 auto;
+}
+
 .upcoming-events-list {
-  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .upcoming-event-card {
   width: 100%;
-  min-height: 170px;
-  padding: 26px 30px;
+  height: 20%;
+  min-height: 0;
+  flex: 0 0 20%;
+  padding: 16px 24px;
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr) auto;
+  grid-template-columns: minmax(180px, 24%) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   background: #ffffff;
   border: 1px solid var(--line);
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
 }
 
 .upcoming-event-card:hover,
@@ -111,182 +140,106 @@
 }
 
 .upcoming-event-date {
-  color: var(--muted);
-  font-size: 15px;
-  font-weight: 800;
+  color: var(--text);
+  font-size: clamp(18px, 1.8vw, 27px);
+  font-weight: 900;
+  line-height: 1.25;
 }
 
 .upcoming-event-card h3 {
   margin: 0;
-  font-size: clamp(22px, 2.6vw, 34px);
-  line-height: 1.3;
+  font-size: clamp(22px, 2.4vw, 36px);
+  line-height: 1.25;
 }
 
 .upcoming-event-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
-  margin-top: 10px;
+  gap: 5px 22px;
+  margin-top: 6px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: clamp(14px, 1.3vw, 17px);
+  font-weight: 700;
 }
 
 .upcoming-event-status {
   display: none;
 }
 
-#song_ranking {
-  min-height: 100vh;
-  padding: 96px 7vw;
-  background: var(--section-dark);
-  color: #ffffff;
-}
-
-#song_ranking .section-description {
-  color: rgba(255,255,255,0.7);
-}
-
-.ranking-list {
-  max-width: 920px;
-  gap: 22px;
-}
-
-.ranking-item {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) 90px;
-  grid-template-rows: auto auto;
-  column-gap: 18px;
-  row-gap: 10px;
-  align-items: center;
-}
-
-.ranking-number {
-  grid-row: 1 / span 2;
-  font-size: 20px;
-  color: rgba(255,255,255,0.5);
-}
-
-.ranking-title {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.ranking-percent {
-  text-align: right;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.ranking-bar {
-  width: 100%;
-  height: 10px;
-  grid-column: 2 / span 2;
-  overflow: hidden;
-  background: rgba(255,255,255,0.16);
-  border-radius: 999px;
-}
-
-.ranking-fill {
-  height: 100%;
-  min-width: 2px;
-  background: #ffffff;
-  border-radius: inherit;
-}
-
-.home-works-preview {
-  margin-top: 110px;
-  padding-top: 70px;
-  border-top: 1px solid rgba(255,255,255,0.2);
-}
-
-.home-works-preview .section-title--small {
-  font-size: clamp(34px, 4vw, 56px);
-}
-
-.works-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.work-card {
-  padding: 24px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.16);
-}
-
-.work-card h4 {
-  margin: 0 0 16px;
-  font-size: 22px;
-}
-
-.spotify-embed {
-  width: 100%;
-  border: 0;
-  border-radius: 12px;
-}
-
 @media (max-width: 1000px) {
   #mainpage {
+    grid-template-columns: 70% 30%;
+  }
+
+  .home-copy {
+    padding-left: 5vw;
+  }
+
+  .home-copy h1 {
+    max-width: 82%;
+  }
+
+  .home-copy p {
+    max-width: 60%;
+  }
+
+  .upcoming-event-card {
+    grid-template-columns: minmax(150px, 28%) minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 700px) {
+  #mainpage {
     grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .home {
+    min-height: 72vh;
+  }
+
+  .news {
+    min-height: auto;
+    padding: 36px 24px;
+  }
+
+  .home-copy {
+    padding: 0 24px 48px;
+  }
+
+  .home-copy h1,
+  .home-copy p {
+    max-width: 100%;
+  }
+
+  #latest_event {
     min-height: 100vh;
+    padding: 10px 24px;
   }
 
-  .recent-news-panel {
-    justify-content: flex-start;
-    padding: 52px 7vw;
-  }
-
-  .upcoming-event-card {
-    grid-template-columns: 150px minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 800px) {
-  .section-heading-row {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .works-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  #mainpage,
-  #latest_event,
-  #song_ranking {
-    min-height: 100%;
-  }
-
-  #latest_event,
-  #song_ranking {
-    padding: 72px 24px;
-  }
-
-  .mainpage-copy {
-    padding: 0 24px 64px;
-  }
-
-  .recent-news-panel {
-    padding: 44px 24px;
+  .latest-event-shell {
+    min-height: calc(100vh - 20px);
   }
 
   .upcoming-event-card {
+    height: auto;
+    flex: 1 1 0;
     grid-template-columns: 1fr;
-    gap: 10px;
-    min-height: 0;
+    gap: 6px;
+    padding: 18px 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .home-copy h1 {
+    font-size: clamp(34px, 11vw, 48px);
   }
 
-  .ranking-item {
-    grid-template-columns: 36px minmax(0, 1fr) 72px;
+  .home-copy p {
+    font-size: 20px;
   }
 
-  .ranking-title {
-    font-size: 18px;
-  }
-
-  .ranking-percent {
-    font-size: 16px;
+  .upcoming-event-card {
+    flex: 1 1 0;
   }
 }
