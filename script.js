@@ -4,13 +4,10 @@ const rankingList = document.querySelector('#ranking-list');
 const eventModal = document.querySelector('#event-modal');
 const modalTitle = document.querySelector('#modal-title');
 const modalContent = document.querySelector('#modal-content');
-const logoImage = document.querySelector('.brand-logo-image');
-const logoFallback = document.querySelector('.brand-logo-fallback');
 
 function formatDate(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
   if (Number.isNaN(date.getTime())) return '日期未設定';
-
   return new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: '2-digit',
@@ -20,16 +17,12 @@ function formatDate(dateString) {
 
 function formatEventDateTime(event) {
   const dateText = event.date ? formatDate(event.date) : '日期未設定';
-
   if (event.end_date && event.end_date !== event.date) {
-    const endDateText = formatDate(event.end_date).replace(/^\d{4}\//, '');
-    return `${dateText}–${endDateText}`;
+    return `${dateText}–${formatDate(event.end_date).replace(/^\d{4}\//, '')}`;
   }
-
   if (event.is_datetime && event.time) {
     return event.end_time ? `${dateText} ${event.time}–${event.end_time}` : `${dateText} ${event.time}`;
   }
-
   return dateText;
 }
 
@@ -84,7 +77,6 @@ function renderEvent(event) {
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
       <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
-    <div class="event-status">${escapeHtml(event.status || '未設定')}</div>
     <span class="event-arrow" aria-hidden="true">→</span>
   `;
   item.addEventListener('click', () => openEvent(event));
@@ -98,6 +90,9 @@ function openEvent(event) {
 
   const mapsUrl = buildGoogleMapsUrl(event.address);
   const sourceUrl = String(event.source || '').trim();
+  const addressText = String(event.address || '').trim();
+  const displayAddress = addressText || String(event.venue || '').trim();
+  const displayAddressLink = buildGoogleMapsUrl(displayAddress);
 
   modalContent.innerHTML = `
     <div class="detail-summary">
@@ -122,13 +117,15 @@ function openEvent(event) {
 
     <section class="detail-section">
       <h3>演出詳細地址</h3>
-      <p class="detail-value">${escapeHtml(event.address || '目前尚未設定詳細地址')}</p>
-      ${mapsUrl ? `<a class="text-link detail-link" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">在 Google Maps 開啟 →</a>` : '<p class="detail-empty">目前沒有可使用的地圖連結。</p>'}
+      ${displayAddress
+        ? `<p class="detail-value"><a class="detail-link" href="${escapeHtml(displayAddressLink)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayAddress)}</a></p>`
+        : '<p class="detail-empty">目前尚未設定演出詳細地址。</p>'}
     </section>
 
     <section class="detail-section detail-section--source">
-      <h3>演出資訊來源</h3>
-      ${sourceUrl ? `<a class="text-link detail-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">開啟演出詳細資訊 →</a>` : '<p class="detail-empty">目前沒有設定來源網址。</p>'}
+      ${sourceUrl
+        ? `<a class="detail-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">點此瀏覽演出資訊來源</a>`
+        : '<p class="detail-empty">目前沒有設定來源網址。</p>'}
     </section>
   `;
 
@@ -154,21 +151,21 @@ document.addEventListener('keydown', event => {
 
 function renderEvents(events) {
   if (!eventList) return;
-
   const sortedEvents = [...events].sort((a, b) => String(a.date).localeCompare(String(b.date)));
   eventList.innerHTML = '';
+  sortedEvents.forEach(event => eventList.appendChild(renderEvent(event)));
+}
 
-  sortedEvents.forEach(event => {
-    eventList.appendChild(renderEvent(event));
-  });
+function getTodayStart() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
 }
 
 function renderUpcomingEvents(events) {
   if (!upcomingEvents) return;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
+  const today = getTodayStart();
   const nextEvents = [...events]
     .filter(event => {
       const date = new Date(`${event.date}T00:00:00`);
@@ -183,9 +180,9 @@ function renderUpcomingEvents(events) {
   }
 
   upcomingEvents.innerHTML = nextEvents.map((event, index) => `
-    <article class="upcoming-event-card" data-event-index="${index}">
+    <article class="upcoming-event-card" data-event-index="${index}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(event.title || '演出')} 詳細資料">
+      <div class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</div>
       <div>
-        <div class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</div>
         <h3>${escapeHtml(event.title || '未命名演出')}</h3>
         <div class="upcoming-event-meta">
           <span>${escapeHtml(cleanCity(event.city))}</span>
@@ -193,16 +190,12 @@ function renderUpcomingEvents(events) {
           <span>${escapeHtml(event.type || '演出')}</span>
         </div>
       </div>
-      <div>
-        <span class="upcoming-event-status">${escapeHtml(event.status || '未設定')}</span>
-      </div>
+      <span class="event-arrow" aria-hidden="true">→</span>
     </article>
   `).join('');
 
   upcomingEvents.querySelectorAll('[data-event-index]').forEach((card, index) => {
     card.addEventListener('click', () => openEvent(nextEvents[index]));
-    card.setAttribute('role', 'button');
-    card.setAttribute('tabindex', '0');
     card.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
@@ -233,7 +226,11 @@ function renderSongRanking(events) {
   }
 
   const ranking = [...counts.entries()]
-    .map(([title, count]) => ({ title, count, percent: (count / songfulEvents.length) * 100 }))
+    .map(([title, count]) => ({
+      title,
+      count,
+      percent: (count / songfulEvents.length) * 100
+    }))
     .sort((a, b) => b.percent - a.percent || a.title.localeCompare(b.title, 'zh-Hant'));
 
   rankingList.innerHTML = ranking.map((song, index) => `
@@ -251,7 +248,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=7`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=8`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
@@ -262,33 +259,11 @@ async function loadEvents() {
     renderSongRanking(events);
   } catch (error) {
     console.error(error);
-    const message = '<p>演出資料暫時無法載入。請稍後重新整理頁面。</p>';
+    const message = '<p class="section-empty">演出資料暫時無法載入。請稍後重新整理頁面。</p>';
     if (eventList) eventList.innerHTML = message;
     if (upcomingEvents) upcomingEvents.innerHTML = message;
     if (rankingList) rankingList.innerHTML = message;
   }
 }
 
-function setupLogo() {
-  if (!logoImage || !logoFallback) return;
-
-  const showFallback = () => {
-    logoImage.hidden = true;
-    logoFallback.hidden = false;
-  };
-
-  logoFallback.hidden = true;
-  logoImage.hidden = false;
-  logoImage.addEventListener('error', showFallback);
-  logoImage.addEventListener('load', () => {
-    logoImage.hidden = false;
-    logoFallback.hidden = true;
-  });
-
-  if (logoImage.complete && logoImage.naturalWidth === 0) {
-    showFallback();
-  }
-}
-
-setupLogo();
 loadEvents();
