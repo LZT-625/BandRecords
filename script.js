@@ -4,6 +4,19 @@ const eventModal = document.querySelector('#event-modal');
 const modalTitle = document.querySelector('#modal-title');
 const modalContent = document.querySelector('#modal-content');
 
+// 目前網站的最小測試資料。
+// 正式串接 Notion 後，這裡會由正式資料取代。
+const fallbackEvents = [
+  {
+    title: '範例演出活動',
+    date: '2026-09-13',
+    time: '19:30',
+    city: '台北',
+    venue: '演出場地',
+    status: '已參與'
+  }
+];
+
 function formatDate(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
   return new Intl.DateTimeFormat('zh-TW', {
@@ -83,43 +96,51 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeModal();
 });
 
+function renderEvents(events) {
+  if (!eventList) return;
+
+  const sortedEvents = [...events].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  eventList.innerHTML = '';
+  if (upcomingEvents) upcomingEvents.innerHTML = '';
+
+  if (!sortedEvents.length) {
+    eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
+    if (upcomingEvents) upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
+    return;
+  }
+
+  sortedEvents.forEach((event, index) => {
+    eventList.appendChild(renderEvent(event, index));
+  });
+
+  if (upcomingEvents) {
+    sortedEvents.slice(0, 3).forEach((event, index) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'upcoming-item';
+      item.innerHTML = `<strong>${escapeHtml(formatDate(event.date))}</strong><span>${escapeHtml(event.title)}</span>`;
+      item.addEventListener('click', () => openEvent(event, index));
+      upcomingEvents.appendChild(item);
+    });
+  }
+}
+
 async function loadEvents() {
   if (!eventList) return;
 
   try {
-    const response = await fetch('data/events.json');
-    if (!response.ok) throw new Error('無法讀取演出資料');
+    // 使用目前 index.html 所在位置建立完整資料網址，避免 GitHub Pages 路徑解析問題。
+    const dataUrl = new URL('data/events.json', document.baseURI).href;
+    const response = await fetch(`${dataUrl}?v=3`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
-    events.sort((a, b) => a.date.localeCompare(b.date));
+    if (!Array.isArray(events)) throw new Error('演出資料格式不是陣列');
 
-    eventList.innerHTML = '';
-    if (upcomingEvents) upcomingEvents.innerHTML = '';
-
-    if (!events.length) {
-      eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
-      if (upcomingEvents) upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
-      return;
-    }
-
-    events.forEach((event, index) => {
-      eventList.appendChild(renderEvent(event, index));
-    });
-
-    if (upcomingEvents) {
-      events.slice(0, 3).forEach((event, index) => {
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.className = 'upcoming-item';
-        item.innerHTML = `<strong>${escapeHtml(formatDate(event.date))}</strong><span>${escapeHtml(event.title)}</span>`;
-        item.addEventListener('click', () => openEvent(event, index));
-        upcomingEvents.appendChild(item);
-      });
-    }
+    renderEvents(events);
   } catch (error) {
-    eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
-    if (upcomingEvents) upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
-    console.error(error);
+    console.warn('events.json 無法載入，改用測試資料：', error);
+    renderEvents(fallbackEvents);
   }
 }
 
