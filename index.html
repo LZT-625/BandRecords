@@ -50,7 +50,7 @@
         <div>
           <p class="eyebrow">EVENT ARCHIVE</p>
           <h2>館青去哪了！？</h2>
-          <p class="section-intro">依演出日期整理館青走過的城市、場地與現場紀錄。</p>
+          <p class="section-intro">點選任一場演出，可查看目前資料中的完整欄位。</p>
         </div>
       </div>
       <div id="event-list" class="event-list"></div>
@@ -114,6 +114,16 @@
       </div>
     </section>
   </main>
+
+  <div id="event-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" type="button" aria-label="關閉" data-close-modal>×</button>
+      <p class="eyebrow">EVENT DETAIL</p>
+      <h2 id="modal-title">演出詳細資料</h2>
+      <div id="modal-content" class="detail-grid"></div>
+    </article>
+  </div>
 
   <footer class="site-footer">
     <p>BandRecords · 跟館青出去走一走</p>
