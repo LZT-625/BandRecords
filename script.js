@@ -40,6 +40,8 @@ function renderEvent(event, index) {
 }
 
 function openEvent(event, index) {
+  if (!eventModal || !modalTitle || !modalContent) return;
+
   modalTitle.textContent = event.title || '演出詳細資料';
   const fields = [
     ['演出日期', event.date ? formatDate(event.date) : '未設定'],
@@ -67,6 +69,7 @@ function openEvent(event, index) {
 }
 
 function closeModal() {
+  if (!eventModal) return;
   eventModal.classList.remove('is-open');
   eventModal.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('modal-open');
@@ -81,6 +84,8 @@ document.addEventListener('keydown', event => {
 });
 
 async function loadEvents() {
+  if (!eventList) return;
+
   try {
     const response = await fetch('data/events.json');
     if (!response.ok) throw new Error('無法讀取演出資料');
@@ -89,23 +94,31 @@ async function loadEvents() {
     events.sort((a, b) => a.date.localeCompare(b.date));
 
     eventList.innerHTML = '';
-    upcomingEvents.innerHTML = '';
+    if (upcomingEvents) upcomingEvents.innerHTML = '';
+
+    if (!events.length) {
+      eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
+      if (upcomingEvents) upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
+      return;
+    }
 
     events.forEach((event, index) => {
       eventList.appendChild(renderEvent(event, index));
     });
 
-    events.slice(0, 3).forEach((event, index) => {
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.className = 'upcoming-item';
-      item.innerHTML = `<strong>${escapeHtml(formatDate(event.date))}</strong><span>${escapeHtml(event.title)}</span>`;
-      item.addEventListener('click', () => openEvent(event, index));
-      upcomingEvents.appendChild(item);
-    });
+    if (upcomingEvents) {
+      events.slice(0, 3).forEach((event, index) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'upcoming-item';
+        item.innerHTML = `<strong>${escapeHtml(formatDate(event.date))}</strong><span>${escapeHtml(event.title)}</span>`;
+        item.addEventListener('click', () => openEvent(event, index));
+        upcomingEvents.appendChild(item);
+      });
+    }
   } catch (error) {
     eventList.innerHTML = '<p>目前沒有可顯示的演出資料。</p>';
-    upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
+    if (upcomingEvents) upcomingEvents.innerHTML = '<p class="event-meta">資料尚未設定。</p>';
     console.error(error);
   }
 }
