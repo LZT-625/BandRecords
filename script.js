@@ -1,5 +1,8 @@
 const eventList = document.querySelector('#event-list');
 const upcomingEvents = document.querySelector('#upcoming-events');
+const eventModal = document.querySelector('#event-modal');
+const modalTitle = document.querySelector('#modal-title');
+const modalContent = document.querySelector('#modal-content');
 
 function formatDate(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
@@ -10,19 +13,72 @@ function formatDate(dateString) {
   }).format(date);
 }
 
-function renderEvent(event) {
-  const item = document.createElement('article');
-  item.className = 'event-item';
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function renderEvent(event, index) {
+  const item = document.createElement('button');
+  item.type = 'button';
+  item.className = 'event-item event-item-button';
   item.innerHTML = `
-    <div class="event-date">${formatDate(event.date)}</div>
-    <div>
-      <h3>${event.title}</h3>
-      <div class="event-meta">${event.city} · ${event.venue}${event.time ? ` · ${event.time}` : ''}</div>
+    <div class="event-date">${escapeHtml(formatDate(event.date))}</div>
+    <div class="event-main">
+      <h3>${escapeHtml(event.title)}</h3>
+      <div class="event-meta">${escapeHtml(event.city)} · ${escapeHtml(event.venue)}${event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
-    <div class="event-status">${event.status || '未設定'}</div>
+    <div class="event-status">${escapeHtml(event.status || '未設定')}</div>
+    <span class="event-arrow" aria-hidden="true">→</span>
   `;
+  item.addEventListener('click', () => openEvent(event, index));
   return item;
 }
+
+function openEvent(event, index) {
+  modalTitle.textContent = event.title || '演出詳細資料';
+  const fields = [
+    ['演出日期', event.date ? formatDate(event.date) : '未設定'],
+    ['演出時間', event.time || '未設定'],
+    ['演出所在城市', event.city || '未設定'],
+    ['演出詳細地點', event.venue || '未設定'],
+    ['參與狀態（GO？）', event.status || '未設定']
+  ];
+
+  modalContent.innerHTML = fields.map(([label, value]) => `
+    <div class="detail-item">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+    </div>
+  `).join('');
+
+  const note = document.createElement('p');
+  note.className = 'detail-note';
+  note.textContent = `目前為演出資料第 ${index + 1} 筆。後續會在這裡加入活動來源、歌單、照片與其他關聯資料。`;
+  modalContent.appendChild(note);
+
+  eventModal.classList.add('is-open');
+  eventModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeModal() {
+  eventModal.classList.remove('is-open');
+  eventModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+document.querySelectorAll('[data-close-modal]').forEach(element => {
+  element.addEventListener('click', closeModal);
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeModal();
+});
 
 async function loadEvents() {
   try {
@@ -32,12 +88,19 @@ async function loadEvents() {
     const events = await response.json();
     events.sort((a, b) => a.date.localeCompare(b.date));
 
-    events.forEach(event => eventList.appendChild(renderEvent(event)));
-    events.slice(0, 3).forEach(event => {
-      const item = document.createElement('div');
-      item.className = 'event-meta';
-      item.style.marginBottom = '12px';
-      item.innerHTML = `<strong>${formatDate(event.date)}</strong>　${event.title}`;
+    eventList.innerHTML = '';
+    upcomingEvents.innerHTML = '';
+
+    events.forEach((event, index) => {
+      eventList.appendChild(renderEvent(event, index));
+    });
+
+    events.slice(0, 3).forEach((event, index) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'upcoming-item';
+      item.innerHTML = `<strong>${escapeHtml(formatDate(event.date))}</strong><span>${escapeHtml(event.title)}</span>`;
+      item.addEventListener('click', () => openEvent(event, index));
       upcomingEvents.appendChild(item);
     });
   } catch (error) {
