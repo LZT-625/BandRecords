@@ -139,11 +139,29 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
+.upcoming-event-date-block {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .upcoming-event-date {
   color: var(--text);
   font-size: clamp(18px, 1.8vw, 27px);
   font-weight: 900;
   line-height: 1.25;
+}
+
+.upcoming-event-weekday {
+  color: var(--muted);
+  font-size: clamp(14px, 1.4vw, 18px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.upcoming-event-main {
+  min-width: 0;
 }
 
 .upcoming-event-card h3 {
