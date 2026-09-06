@@ -1,0 +1,89 @@
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.modal.is-open {
+  display: block;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20,20,20,0.55);
+}
+
+.modal-panel {
+  position: relative;
+  width: min(680px, calc(100% - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  margin: 24px auto;
+  padding: 34px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+
+.modal-panel h2 {
+  font-size: 34px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  background: var(--bg);
+}
+
+.detail-grid {
+  display: grid;
+  gap: 0;
+  margin-top: 28px;
+}
+
+.detail-item {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.detail-item span {
+  color: var(--muted);
+}
+
+.detail-note {
+  margin: 24px 0 0;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .modal-panel {
+    margin: 12px auto;
+    max-height: calc(100vh - 24px);
+    padding: 28px 22px;
+  }
+
+  .detail-item {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
