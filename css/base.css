@@ -8,8 +8,9 @@
   --text: #202020;
   --muted: #77736c;
   --line: #ddd9d0;
-  --section-dark: #202020;
-  --section-light: #f0ede6;
+  --accent: #202020;
+  --section-light: #f0eee8;
+  --section-dark: #222222;
 }
 
 html {
@@ -18,7 +19,6 @@ html {
 
 body {
   margin: 0;
-  padding-top: 80px;
   background: var(--bg);
   color: var(--text);
   font-family: Arial, "Noto Sans TC", sans-serif;
@@ -29,60 +29,117 @@ body.modal-open {
   overflow: hidden;
 }
 
-body,
-main,
-section,
-div,
-article {
-  width: 100%;
-}
-
 a {
   color: inherit;
   text-decoration: none;
 }
 
-button,
-input,
-textarea,
-select {
+button {
   font: inherit;
-}
-
-img {
-  max-width: 100%;
 }
 
 h1,
 h2,
 h3,
-p {
+h4 {
   margin-top: 0;
+  line-height: 1.25;
 }
 
 h1,
 h2,
-h3 {
-  line-height: 1.2;
+h3,
+h4,
+p {
+  overflow-wrap: anywhere;
 }
 
-.text-link {
+.section-shell {
+  width: min(1240px, calc(100% - 80px));
+  margin: 0 auto;
+}
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: clamp(40px, 5.8vw, 72px);
+  letter-spacing: -0.03em;
+}
+
+.section-description {
+  max-width: 720px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.section-kicker {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.section-link {
+  flex: 0 0 auto;
+  padding-bottom: 6px;
   font-weight: 700;
+  border-bottom: 1px solid currentColor;
 }
 
-.text-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.section-link:hover,
+.section-link:focus-visible {
+  opacity: 0.65;
+}
+
+.section-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.card {
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
 .site-footer {
-  padding: 28px 32px 48px;
+  width: 100%;
+  padding: 28px 40px 56px;
   color: var(--muted);
   font-size: 13px;
+  text-align: center;
 }
 
-@media (max-width: 520px) {
-  body {
-    padding-top: 72px;
+@media (max-width: 900px) {
+  .section-shell {
+    width: min(1240px, calc(100% - 48px));
+  }
+
+  .section-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .section-shell {
+    width: min(1240px, calc(100% - 32px));
+  }
+
+  .section-title {
+    font-size: 42px;
+  }
+
+  .section-description {
+    font-size: 16px;
   }
 }
