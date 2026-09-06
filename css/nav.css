@@ -106,15 +106,6 @@
 }
 
 @media (max-width: 520px) {
-  .site-header,
-  .navbar {
-    height: 72px;
-  }
-
-  .navbar {
-    grid-template-columns: 1fr auto;
-  }
-
   .site-nav {
     gap: 12px;
   }
