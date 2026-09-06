@@ -16,13 +16,12 @@ function formatDate(dateString) {
   }).format(date);
 }
 
-function formatTime(timeString) {
-  return timeString || '未設定';
-}
-
-function formatEventTime(event) {
-  if (!event.time) return '未設定';
-  return event.end_time ? `${event.time}–${event.end_time}` : event.time;
+function formatEventDateTime(event) {
+  const dateText = event.date ? formatDate(event.date) : '日期未設定';
+  if (event.is_datetime && event.time) {
+    return event.end_time ? `${dateText} ${event.time}–${event.end_time}` : `${dateText} ${event.time}`;
+  }
+  return dateText;
 }
 
 function cleanCity(city) {
@@ -38,63 +37,88 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-function renderEvent(event, index) {
+function buildGoogleMapsUrl(address) {
+  const value = String(address || '').trim();
+  if (!value) return '';
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+}
+
+function renderSongList(songs) {
+  const list = Array.isArray(songs) ? songs.filter(song => song && song.title).slice(0, 20) : [];
+  if (!list.length) {
+    return '<p class="detail-empty">目前沒有歌單資料。</p>';
+  }
+
+  return `
+    <ol class="song-list">
+      ${list.map((song, index) => {
+        const title = escapeHtml(song.title);
+        const link = String(song.url || '').trim();
+        return link
+          ? `<li><a class="song-link" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer"><span>${index + 1}.</span>${title}</a></li>`
+          : `<li><span class="song-link song-link--plain"><span>${index + 1}.</span>${title}</span></li>`;
+      }).join('')}
+    </ol>
+  `;
+}
+
+function renderEvent(event) {
   const item = document.createElement('button');
   item.type = 'button';
   item.className = 'event-item event-item-button';
   item.innerHTML = `
-    <div class="event-date">${escapeHtml(formatDate(event.date))}</div>
+    <div class="event-date">${escapeHtml(event.date ? formatDate(event.date) : '日期未設定')}</div>
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.time ? ` · ${escapeHtml(formatEventTime(event))}` : ''}</div>
+      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
     <div class="event-status">${escapeHtml(event.status || '未設定')}</div>
     <span class="event-arrow" aria-hidden="true">→</span>
   `;
-  item.addEventListener('click', () => openEvent(event, index));
+  item.addEventListener('click', () => openEvent(event));
   return item;
 }
 
-function openEvent(event, index) {
+function openEvent(event) {
   if (!eventModal || !modalTitle || !modalContent) return;
 
   modalTitle.textContent = event.title || '演出詳細資料';
 
-  const fields = [
-    ['演出日期', event.date ? formatDate(event.date) : '未設定'],
-    ['演出時間', formatEventTime(event)],
-    ['演出所在城市', cleanCity(event.city)],
-    ['演出詳細地點', event.venue || '未設定'],
-    ['演出類型', event.type || '未設定'],
-    ['參與狀態（GO？）', event.status || '未設定']
-  ];
+  const mapsUrl = buildGoogleMapsUrl(event.address);
+  const sourceUrl = String(event.source || '').trim();
 
-  modalContent.innerHTML = fields.map(([label, value]) => `
-    <div class="detail-item">
-      <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value)}</strong>
+  modalContent.innerHTML = `
+    <div class="detail-summary">
+      <div class="detail-summary-item">
+        <span>演出時間</span>
+        <strong>${escapeHtml(formatEventDateTime(event))}</strong>
+      </div>
+      <div class="detail-summary-item">
+        <span>演出類型</span>
+        <strong>${escapeHtml(event.type || '未設定')}</strong>
+      </div>
+      <div class="detail-summary-item">
+        <span>所在城市</span>
+        <strong>${escapeHtml(cleanCity(event.city))}</strong>
+      </div>
     </div>
-  `).join('');
 
-  if (event.source) {
-    const source = document.createElement('a');
-    source.className = 'detail-note text-link';
-    source.href = event.source;
-    source.target = '_blank';
-    source.rel = 'noopener noreferrer';
-    source.textContent = '開啟演出來源 →';
-    modalContent.appendChild(source);
-  }
+    <section class="detail-section detail-section--songs">
+      <h3>今日歌單</h3>
+      ${renderSongList(event.songs)}
+    </section>
 
-  if (event.notion_url) {
-    const notion = document.createElement('a');
-    notion.className = 'detail-note text-link';
-    notion.href = event.notion_url;
-    notion.target = '_blank';
-    notion.rel = 'noopener noreferrer';
-    notion.textContent = '開啟 Notion 原始資料 →';
-    modalContent.appendChild(notion);
-  }
+    <section class="detail-section">
+      <h3>演出詳細地址</h3>
+      <p class="detail-value">${escapeHtml(event.address || '目前尚未設定詳細地址')}</p>
+      ${mapsUrl ? `<a class="text-link detail-link" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">在 Google Maps 開啟 →</a>` : '<p class="detail-empty">目前沒有可使用的地圖連結。</p>'}
+    </section>
+
+    <section class="detail-section detail-section--source">
+      <h3>演出資訊來源</h3>
+      ${sourceUrl ? `<a class="text-link detail-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">開啟演出詳細資訊 →</a>` : '<p class="detail-empty">目前沒有設定來源網址。</p>'}
+    </section>
+  `;
 
   eventModal.classList.add('is-open');
   eventModal.setAttribute('aria-hidden', 'false');
@@ -127,8 +151,8 @@ function renderEvents(events) {
     return;
   }
 
-  sortedEvents.forEach((event, index) => {
-    eventList.appendChild(renderEvent(event, index));
+  sortedEvents.forEach(event => {
+    eventList.appendChild(renderEvent(event));
   });
 }
 
@@ -137,7 +161,7 @@ async function loadEvents() {
 
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=5`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=6`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
@@ -146,7 +170,7 @@ async function loadEvents() {
     renderEvents(events);
   } catch (error) {
     console.error(error);
-    eventList.innerHTML = `<p>演出資料暫時無法載入。請稍後重新整理頁面。</p>`;
+    eventList.innerHTML = '<p>演出資料暫時無法載入。請稍後重新整理頁面。</p>';
   }
 }
 
