@@ -1,113 +1,289 @@
-.hero {
-  min-height: 58vh;
+#mainpage,
+#latest_event,
+#song_ranking {
+  width: 100%;
+  min-height: 1000px;
+  position: relative;
+  scroll-margin-top: 80px;
+}
+
+#mainpage {
+  display: grid;
+  grid-template-columns: 1fr 34%;
+  align-items: stretch;
+  overflow: hidden;
+  background-color: #d8d3c8;
+  background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url("../img/mainpage/latest-promo.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.mainpage-copy {
+  align-self: end;
+  padding: 0 0 96px 8vw;
+  color: #ffffff;
+  max-width: 760px;
+}
+
+.mainpage-copy h1 {
+  margin-bottom: 12px;
+  font-size: clamp(48px, 7vw, 92px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.mainpage-copy p {
+  margin: 0;
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 700;
+}
+
+.recent-news-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px 0;
-  border-bottom: 1px solid var(--line);
+  gap: 22px;
+  padding: 64px 5vw;
+  background: rgba(28, 28, 28, 0.92);
+  color: #ffffff;
 }
 
-.hero h2 {
-  max-width: 780px;
+.recent-news-panel h2 {
+  margin-bottom: 8px;
+  font-size: 40px;
 }
 
-.hero-text {
-  max-width: 620px;
-  color: var(--muted);
-  font-size: 17px;
-}
-
-.notice-grid {
+.news-list,
+.upcoming-events-grid,
+.ranking-list,
+.works-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  padding: 48px 0;
 }
 
-.notice-card {
-  padding: 28px;
-  background: var(--surface);
+.news-list {
+  gap: 18px;
+}
+
+.news-card {
+  padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,0.25);
+}
+
+.news-card h3 {
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+.news-card p {
+  margin: 0;
+  color: rgba(255,255,255,0.78);
+}
+
+#latest_event {
+  padding: 88px 7vw;
+  background: var(--section-light);
+}
+
+.section-shell {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.section-title {
+  margin-bottom: 12px;
+  font-size: clamp(42px, 6vw, 72px);
+}
+
+.section-description {
+  max-width: 720px;
+  margin-bottom: 54px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.upcoming-events-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.upcoming-event-card {
+  min-height: 420px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
   border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
 }
 
-.notice-card--primary {
-  border-width: 2px;
-}
-
-.section {
-  padding: 72px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.section-heading {
-  margin-bottom: 28px;
-}
-
-.section-heading h2 {
-  margin-bottom: 0;
-  font-size: 36px;
-}
-
-.section-intro {
-  max-width: 620px;
+.upcoming-event-date {
+  font-size: 15px;
+  font-weight: 700;
   color: var(--muted);
 }
 
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 48px 0;
+.upcoming-event-card h3 {
+  margin: 18px 0 16px;
+  font-size: clamp(26px, 2.5vw, 36px);
 }
 
-.stats-grid {
+.upcoming-event-meta {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 8px;
+  color: var(--muted);
 }
 
-.stat-card {
-  padding: 24px;
-  background: var(--surface);
+.upcoming-event-status {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 20px;
+  padding: 6px 12px;
   border: 1px solid var(--line);
-}
-
-.stat-card span,
-.stat-card small {
-  display: block;
-  color: var(--muted);
-}
-
-.stat-card strong {
-  display: block;
-  margin: 10px 0 4px;
-  font-size: 42px;
-  line-height: 1;
-}
-
-.site-footer {
-  padding: 32px 0 60px;
-  color: var(--muted);
+  border-radius: 999px;
   font-size: 13px;
 }
 
-@media (max-width: 800px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+#song_ranking {
+  padding: 88px 7vw;
+  background: var(--section-dark);
+  color: #ffffff;
+}
+
+#song_ranking .section-description {
+  color: rgba(255,255,255,0.7);
+}
+
+.ranking-list {
+  max-width: 920px;
+  gap: 22px;
+}
+
+.ranking-item {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 90px;
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  row-gap: 10px;
+  align-items: center;
+}
+
+.ranking-number {
+  grid-row: 1 / span 2;
+  font-size: 20px;
+  color: rgba(255,255,255,0.5);
+}
+
+.ranking-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.ranking-percent {
+  text-align: right;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ranking-bar {
+  width: 100%;
+  height: 10px;
+  grid-column: 2 / span 2;
+  overflow: hidden;
+  background: rgba(255,255,255,0.16);
+  border-radius: 999px;
+}
+
+.ranking-fill {
+  height: 100%;
+  min-width: 2px;
+  background: #ffffff;
+  border-radius: inherit;
+}
+
+.works-anchor {
+  margin-top: 110px;
+  padding-top: 70px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.works-anchor h3 {
+  margin-bottom: 24px;
+  font-size: 30px;
+}
+
+.works-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.work-card {
+  padding: 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.work-card h4 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+
+.spotify-embed {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+.site-footer {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  #mainpage {
+    grid-template-columns: 1fr;
+    min-height: 1000px;
+  }
+
+  .recent-news-panel {
+    justify-content: flex-start;
+    padding: 52px 7vw;
+  }
+
+  .upcoming-events-grid,
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #latest_event,
+  #song_ranking {
+    padding: 72px 6vw;
   }
 }
 
-@media (max-width: 700px) {
-  .hero {
-    min-height: 50vh;
-    padding: 60px 0;
+@media (max-width: 600px) {
+  #mainpage,
+  #latest_event,
+  #song_ranking {
+    min-height: 1000px;
   }
 
-  .section-grid {
-    grid-template-columns: 1fr;
+  .mainpage-copy {
+    padding: 0 24px 64px;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
+  .recent-news-panel {
+    padding: 44px 24px;
+  }
+
+  .ranking-item {
+    grid-template-columns: 36px minmax(0, 1fr) 72px;
+  }
+
+  .ranking-title {
+    font-size: 18px;
+  }
+
+  .ranking-percent {
+    font-size: 16px;
   }
 }
