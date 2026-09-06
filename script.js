@@ -15,6 +15,14 @@ function formatDate(dateString) {
   }).format(date);
 }
 
+function formatWeekday(dateString) {
+  const date = new Date(`${dateString}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return '星期未設定';
+  return new Intl.DateTimeFormat('zh-TW', {
+    weekday: 'long'
+  }).format(date);
+}
+
 function formatEventDateTime(event) {
   const dateText = event.date ? formatDate(event.date) : '日期未設定';
   if (event.end_date && event.end_date !== event.date) {
@@ -88,7 +96,6 @@ function openEvent(event) {
 
   modalTitle.textContent = event.title || '演出詳細資料';
 
-  const mapsUrl = buildGoogleMapsUrl(event.address);
   const sourceUrl = String(event.source || '').trim();
   const addressText = String(event.address || '').trim();
   const displayAddress = addressText || String(event.venue || '').trim();
@@ -181,13 +188,15 @@ function renderUpcomingEvents(events) {
 
   upcomingEvents.innerHTML = nextEvents.map((event, index) => `
     <article class="upcoming-event-card" data-event-index="${index}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(event.title || '演出')} 詳細資料">
-      <div class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</div>
-      <div>
+      <div class="upcoming-event-date-block">
+        <span class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</span>
+        <span class="upcoming-event-weekday">${escapeHtml(formatWeekday(event.date))}</span>
+      </div>
+      <div class="upcoming-event-main">
         <h3>${escapeHtml(event.title || '未命名演出')}</h3>
         <div class="upcoming-event-meta">
-          <span>${escapeHtml(cleanCity(event.city))}</span>
-          <span>${escapeHtml(event.venue || '地點未設定')}</span>
           <span>${escapeHtml(event.type || '演出')}</span>
+          <span>${escapeHtml(event.venue || '地點未設定')}</span>
         </div>
       </div>
       <span class="event-arrow" aria-hidden="true">→</span>
@@ -248,7 +257,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=8`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=9`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
