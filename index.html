@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="跟館青出去走一走｜公館青少年演出、歌曲與作品紀錄">
   <title>跟館青出去走一走｜BandRecords</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,6 +18,7 @@
         <a href="#home">首頁</a>
         <a href="#events">演出紀錄</a>
         <a href="#music">音樂作品</a>
+        <a href="#stats">年度回顧</a>
         <a href="#about">關於</a>
       </nav>
     </div>
@@ -26,20 +28,20 @@
     <section id="home" class="hero">
       <p class="eyebrow">GUNGAN YOUTH ARCHIVE</p>
       <h2>公館青少年演出與作品紀錄</h2>
-      <p class="hero-text">這是 BandRecords 的第一版網站。保留原有資料內容，先建立適合後續擴充的網站骨架。</p>
+      <p class="hero-text">把跟館青一起走過的演出、歌曲與現場資料整理成一個可以持續更新的公開檔案。</p>
     </section>
 
-    <section class="section-grid">
-      <article class="card">
+    <section class="notice-grid" aria-label="重要資訊">
+      <article class="notice-card notice-card--primary">
         <p class="card-label">RECENT NEWS</p>
         <h3>最近大事</h3>
-        <p id="news">網站正在建立中，之後會在這裡放置重要活動與公告。</p>
+        <p>婉玲將於 <strong>9/13 最終場</strong>結束後暫時離開館青。</p>
+        <p class="muted">專場倒數 1 個月</p>
       </article>
-
-      <article class="card">
-        <p class="card-label">UPCOMING</p>
-        <h3>近期演出</h3>
-        <div id="upcoming-events"></div>
+      <article class="notice-card">
+        <p class="card-label">ARCHIVE NOTE</p>
+        <h3>資料說明</h3>
+        <p>作者 2025 年才開始聽館青，因此 2025 年以前的資料為自行爬文建立，可能存在缺漏。</p>
       </article>
     </section>
 
@@ -47,17 +49,59 @@
       <div class="section-heading">
         <div>
           <p class="eyebrow">EVENT ARCHIVE</p>
-          <h2>演出紀錄</h2>
+          <h2>館青去哪了！？</h2>
+          <p class="section-intro">依演出日期整理館青走過的城市、場地與現場紀錄。</p>
         </div>
       </div>
       <div id="event-list" class="event-list"></div>
     </section>
 
     <section id="music" class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MUSIC</p>
+          <h2>最近的作品</h2>
+          <p class="section-intro">沿用 Notion 現有的最新單曲與最新專輯／EP 板塊。</p>
+        </div>
+      </div>
+      <div class="section-grid">
+        <article class="card music-card">
+          <p class="card-label">LATEST SINGLE</p>
+          <h3>最新單曲</h3>
+          <p class="muted">目前資料來源保留於原 Notion 頁面，後續會改成正式作品卡片。</p>
+          <a class="text-link" href="https://open.spotify.com/track/2ObQBIEZqWlpjHOCIquJpc" target="_blank" rel="noopener noreferrer">在 Spotify 開啟 →</a>
+        </article>
+        <article class="card music-card">
+          <p class="card-label">LATEST EP / ALBUM</p>
+          <h3>最新專輯／EP</h3>
+          <p class="muted">目前對應 Notion 中的《今天明天》，後續會補上封面與收錄曲目。</p>
+          <a class="text-link" href="https://open.spotify.com/album/1Fs6PqQFvSh8ovcWbeMOaq" target="_blank" rel="noopener noreferrer">在 Spotify 開啟 →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="stats" class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">2026 RECAP</p>
+          <h2>年度演出回顧</h2>
+          <p class="section-intro">先沿用 Notion 目前的季度統計，之後再改成自動計算。</p>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card"><span>Q1｜1–3月</span><strong>13</strong><small>場演出・成功到了 3 場</small></article>
+        <article class="stat-card"><span>Q2｜4–6月</span><strong>33</strong><small>場演出・成功到了 4 場</small></article>
+        <article class="stat-card"><span>Q3｜7–9月</span><strong>20</strong><small>場演出・成功到了 7 場</small></article>
+        <article class="stat-card"><span>Q4｜10–12月</span><strong>6</strong><small>場演出・成功到了？場</small></article>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="card">
-        <p class="eyebrow">MUSIC</p>
-        <h2>音樂作品</h2>
-        <p>之後會接入你目前 Notion 的最新單曲、專輯／EP 與作品資料。</p>
+        <p class="eyebrow">CREATIONS</p>
+        <h2>館青的創作們</h2>
+        <p>這一區會接上 Notion 既有的歌曲作品資料，之後可依單曲、專輯／EP、收錄歌曲與演出歌單交叉瀏覽。</p>
+        <a class="text-link" href="#music">先看最新作品 →</a>
       </div>
     </section>
 
@@ -65,13 +109,14 @@
       <div class="card">
         <p class="eyebrow">ABOUT</p>
         <h2>關於這個網站</h2>
-        <p>本網站以「跟館青出去走一走」現有資料為基礎，逐步加入演出、歌單、來源、照片與統計功能。</p>
+        <p>本網站以「跟館青出去走一走」現有資料為基礎。Notion 負責整理資料，GitHub Pages 負責公開呈現；資料結構會先保留，再逐步增加搜尋、歌單狀態、照片、地圖與統計等功能。</p>
+        <p class="muted">資料持續施工中，如有刊誤或侵權問題，請透過原頁面提供的 Instagram 聯絡方式通知。</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>BandRecords · 持續施工中</p>
+    <p>BandRecords · 跟館青出去走一走</p>
   </footer>
 
   <script src="script.js"></script>
