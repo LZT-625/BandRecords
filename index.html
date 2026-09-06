@@ -10,17 +10,17 @@
 <body>
   <header class="site-header">
     <nav class="navbar" aria-label="主要導覽">
-      <a class="brand" href="#mainpage" aria-label="回到首頁">
+      <a class="brand" href="index.html" aria-label="回到首頁">
         <div class="brand-logo">
-          <img class="brand-logo-image" src="img/logo/GGteens_Logo.jpg" alt="GGteens Logo">
-          <span class="brand-logo-fallback" aria-hidden="true">GG</span>
+          <img class="brand-logo-image" src="img/logo/GGteens_Logo_BK.png" alt="GGteens">
+          <span class="brand-logo-fallback" aria-hidden="true">GGteens</span>
         </div>
       </a>
       <div class="nav-spacer" aria-hidden="true"></div>
       <div class="site-nav">
-        <a href="#latest_event">演出紀錄</a>
-        <a href="#works">館青的作品</a>
-        <a href="#song_ranking">年度回顧</a>
+        <a href="event_review.html">演出紀錄</a>
+        <a href="song_list.html">館青的作品</a>
+        <a href="2026recap.html">年度回顧</a>
       </div>
     </nav>
   </header>
@@ -33,10 +33,7 @@
       </div>
 
       <aside class="recent-news-panel" aria-labelledby="recent-news-title">
-        <div>
-          <h2 id="recent-news-title">最近大事</h2>
-          <p class="news-panel-subtitle">目前首頁先呈現重要訊息。</p>
-        </div>
+        <h2 id="recent-news-title">最近大事</h2>
         <div id="news-list" class="news-list">
           <article class="news-card">
             <h3>年度專場最終場</h3>
@@ -52,49 +49,23 @@
 
     <section id="latest_event">
       <div class="section-shell">
-        <h2 class="section-title">即將到來的演出</h2>
-        <p class="section-description">顯示目前資料中最接近的 1–3 場演出，點擊卡片可查看完整資料。</p>
-        <div id="upcoming-events" class="upcoming-events-grid"></div>
+        <div class="section-heading-row">
+          <div>
+            <p class="section-kicker">LATEST EVENT</p>
+            <h2 class="section-title">即將到來的演出</h2>
+          </div>
+          <a class="section-link" href="event_review.html">查看完整演出紀錄 →</a>
+        </div>
+        <div id="upcoming-events" class="upcoming-events-list"></div>
       </div>
     </section>
 
     <section id="song_ranking">
       <div class="section-shell">
+        <p class="section-kicker">SONG RANKING</p>
         <h2 class="section-title">年度歌曲演出機率</h2>
-        <p class="section-description">以目前已匯入 2026 年演出歌單的資料計算歌曲出現比例，後續資料增加時會自動重新計算。</p>
+        <p class="section-description">依目前已匯入的年度演出歌單資料計算歌曲出現比例，資料增加時會重新計算。</p>
         <div id="ranking-list" class="ranking-list"></div>
-
-        <div id="works" class="works-anchor">
-          <h3>館青的作品</h3>
-          <div class="works-grid">
-            <article class="work-card">
-              <h4>最新單曲</h4>
-              <iframe
-                class="spotify-embed"
-                src="https://open.spotify.com/embed/track/2ObQBIEZqWlpjHOCIquJpc?utm_source=generator"
-                width="100%"
-                height="152"
-                frameborder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title="Spotify 最新單曲">
-              </iframe>
-            </article>
-            <article class="work-card">
-              <h4>《今天明天》</h4>
-              <iframe
-                class="spotify-embed"
-                src="https://open.spotify.com/embed/album/1Fs6PqQFvSh8ovcWbeMOaq?utm_source=generator"
-                width="100%"
-                height="352"
-                frameborder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title="Spotify 今天明天專輯">
-              </iframe>
-            </article>
-          </div>
-        </div>
       </div>
     </section>
   </main>
