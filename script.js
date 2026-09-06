@@ -17,8 +17,12 @@ function formatDate(dateString) {
 }
 
 function formatTime(timeString) {
-  if (!timeString) return '未設定';
-  return timeString;
+  return timeString || '未設定';
+}
+
+function formatEventTime(event) {
+  if (!event.time) return '未設定';
+  return event.end_time ? `${event.time}–${event.end_time}` : event.time;
 }
 
 function cleanCity(city) {
@@ -42,7 +46,7 @@ function renderEvent(event, index) {
     <div class="event-date">${escapeHtml(formatDate(event.date))}</div>
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
+      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.time ? ` · ${escapeHtml(formatEventTime(event))}` : ''}</div>
     </div>
     <div class="event-status">${escapeHtml(event.status || '未設定')}</div>
     <span class="event-arrow" aria-hidden="true">→</span>
@@ -58,7 +62,7 @@ function openEvent(event, index) {
 
   const fields = [
     ['演出日期', event.date ? formatDate(event.date) : '未設定'],
-    ['演出時間', formatTime(event.time)],
+    ['演出時間', formatEventTime(event)],
     ['演出所在城市', cleanCity(event.city)],
     ['演出詳細地點', event.venue || '未設定'],
     ['演出類型', event.type || '未設定'],
@@ -133,7 +137,7 @@ async function loadEvents() {
 
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=4`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=5`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
