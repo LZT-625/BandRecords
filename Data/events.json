@@ -2,43 +2,99 @@
   {
     "title": "🏙️ 雲林斗六圓環晚會",
     "date": "2026-01-03",
+    "is_datetime": true,
     "time": "11:40",
     "end_time": "12:10",
     "city": "雲林",
     "city_region": "中部 | 雲林",
     "venue": "斗六圓環",
+    "address": "",
     "status": "有去",
     "type": "商演",
     "source": "https://www.instagram.com/p/DSfCBtxEpYA",
     "notion_url": "https://app.notion.com/p/2e39334e81cc809385c3c1f620bde120",
-    "location_notion_url": "https://app.notion.com/p/3349334e81cc80958f95ce0c261f14af"
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc80958f95ce0c261f14af",
+    "songs": [
+      {
+        "title": "🫵 你到底在選擇什麼",
+        "url": "https://open.spotify.com/track/3tKi1rBzT8RPtAyId7iOJ7"
+      },
+      {
+        "title": "💕 偶超級宇宙無敵霹靂愛尼",
+        "url": "https://open.spotify.com/track/2VWVaHdb3uU5izv6jlWB18"
+      },
+      {
+        "title": "🏳️ 至少我們都還沒放棄",
+        "url": "https://open.spotify.com/track/0v3FP3xJN9rr4dxGXfku8n"
+      },
+      {
+        "title": "等你會不會只是慣性",
+        "url": "https://open.spotify.com/track/48qMlE1BtywiaYz7ehO97l"
+      },
+      {
+        "title": "🤝 要不要跟我出去走一走",
+        "url": "https://open.spotify.com/track/4nNaEmvwoI8IOP0XtnzZJn"
+      }
+    ]
   },
   {
     "title": "「嘿，我找到你了」巡迴講唱會 華南高商站",
     "date": "2026-01-14",
+    "is_datetime": false,
     "time": null,
     "end_time": null,
     "city": "嘉義",
     "city_region": "南部 | 嘉義",
     "venue": "東區｜華南高商",
+    "address": "",
     "status": "沒去",
     "type": "校園講唱會",
     "source": "https://www.instagram.com/p/DQWiTgKkvmJ",
     "notion_url": "https://app.notion.com/p/2e39334e81cc80198e83fd34a0209032",
-    "location_notion_url": "https://app.notion.com/p/3349334e81cc8057a5c8db05934c07a4"
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc8057a5c8db05934c07a4",
+    "songs": [
+      {
+        "title": "🤝 要不要跟我出去走一走",
+        "url": "https://open.spotify.com/track/4nNaEmvwoI8IOP0XtnzZJn"
+      },
+      {
+        "title": "🫵 你到底在選擇什麼",
+        "url": "https://open.spotify.com/track/3tKi1rBzT8RPtAyId7iOJ7"
+      },
+      {
+        "title": "🏳️ 至少我們都還沒放棄",
+        "url": "https://open.spotify.com/track/0v3FP3xJN9rr4dxGXfku8n"
+      }
+    ]
   },
   {
     "title": "「嘿，我找到你了」巡迴講唱會 台科大站",
     "date": "2026-01-15",
+    "is_datetime": false,
     "time": null,
     "end_time": null,
     "city": "台北",
     "city_region": "北部 | 台北",
     "venue": "台北 • 台科大 綜研大樓 RB105",
+    "address": "",
     "status": "沒去",
     "type": "校園講唱會",
     "source": "https://www.instagram.com/p/DQWiTgKkvmJ",
     "notion_url": "https://app.notion.com/p/2e39334e81cc8031a436e594f6270e82",
-    "location_notion_url": "https://app.notion.com/p/3349334e81cc807e9ca7cdf0e2ec99c7"
+    "location_notion_url": "https://app.notion.com/p/3349334e81cc807e9ca7cdf0e2ec99c7",
+    "songs": [
+      {
+        "title": "🤝 要不要跟我出去走一走",
+        "url": "https://open.spotify.com/track/4nNaEmvwoI8IOP0XtnzZJn"
+      },
+      {
+        "title": "🫵 你到底在選擇什麼",
+        "url": "https://open.spotify.com/track/3tKi1rBzT8RPtAyId7iOJ7"
+      },
+      {
+        "title": "🏳️ 至少我們都還沒放棄",
+        "url": "https://open.spotify.com/track/0v3FP3xJN9rr4dxGXfku8n"
+      }
+    ]
   }
 ]
