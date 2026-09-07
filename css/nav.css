@@ -1,3 +1,4 @@
+/*全站導覽列-固定在頁面最上方*/
 .site-header {
   position: fixed;
   top: 0;
@@ -11,23 +12,26 @@
   backdrop-filter: blur(12px);
 }
 
+/*導覽列-控制Logo、空白區與右側選單的位置*/
 .navbar {
-    width: 100%;
-    height: 80px;
-    padding: 0 32px;
-    margin: 0;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 32px;
-    opacity: 1;
+  width: 100%;
+  height: 80px;
+  padding: 0 32px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  opacity: 1;
 }
 
+/*導覽列-左側Logo連結*/
 .brand {
   display: flex;
   align-items: center;
 }
 
+/*導覽列-Logo容器大小*/
 .brand-logo {
   min-width: 150px;
   height: 56px;
@@ -35,10 +39,12 @@
   align-items: center;
 }
 
+/*導覽列-原本圖片Logo，目前隱藏*/
 .brand-logo-image {
   display: none;
 }
 
+/*導覽列-目前使用的文字Logo*/
 .brand-logo-fallback {
   display: block;
   color: #ffffff;
@@ -48,6 +54,7 @@
   letter-spacing: -0.04em;
 }
 
+/*導覽列-右側分頁選單排列*/
 .site-nav {
   display: flex;
   justify-content: flex-end;
@@ -55,6 +62,7 @@
   gap: 36px;
 }
 
+/*導覽列-單一分頁連結*/
 .site-nav a {
   padding: 8px 0;
   color: #ffffff;
@@ -64,35 +72,42 @@
   text-decoration: none;
 }
 
+/*導覽列-滑鼠移入或鍵盤選取時的連結效果*/
 .site-nav a:hover,
 .site-nav a:focus-visible {
   text-decoration: underline;
   text-underline-offset: 6px;
 }
 
+/*RWD-平板與小螢幕導覽列縮小間距*/
 @media (max-width: 700px) {
   .navbar {
     padding: 0 18px;
     gap: 16px;
   }
 
+  /*RWD-縮小Logo容器*/
   .brand-logo {
     min-width: 110px;
   }
 
+  /*RWD-縮小文字Logo*/
   .brand-logo-fallback {
     font-size: 24px;
   }
 
+  /*RWD-縮小分頁間距*/
   .site-nav {
     gap: 18px;
   }
 
+  /*RWD-縮小分頁文字*/
   .site-nav a {
     font-size: 14px;
   }
 }
 
+/*RWD-手機版進一步縮小導覽列*/
 @media (max-width: 520px) {
   .brand-logo {
     min-width: 88px;
