@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <!--網頁基本設定-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2026 年度回顧｜跟館青出去走一走</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!--全站共用-最上方導覽列-->
   <header class="site-header">
     <nav class="navbar" aria-label="主要導覽">
+      <!--左側-網站名稱/Logo-->
       <a class="brand" href="index.html" aria-label="回到首頁"><div class="brand-logo"><span class="brand-logo-fallback">GGteens</span></div></a>
+      <!--中間-保留彈性空間-->
       <div class="nav-spacer" aria-hidden="true"></div>
+      <!--右側-網站主要分頁連結-->
       <div class="site-nav">
         <a href="event_review.html">演出紀錄</a>
         <a href="song_list.html">館青的作品</a>
@@ -19,28 +24,43 @@
     </nav>
   </header>
 
+  <!--年度回顧頁-main：當年度演出與歌曲統計-->
   <main class="page-main" id="2026recap">
+    <!--年度回顧頁-主要內容容器-->
     <div class="section-shell page-shell">
+      <!--年度回顧頁-頁面標題-->
       <h1 class="page-title">2026 年度回顧</h1>
+      <!--年度回顧頁-頁面說明-->
       <p class="section-description">年度演出資料與統計。年度歌曲演出機率也集中於本頁呈現。</p>
 
+      <!--年度回顧頁-季度演出統計-->
       <div class="recap-grid">
+        <!--第一季統計卡-->
         <article class="recap-card"><span>第一季</span><strong>13</strong><small>場演出</small></article>
+        <!--第二季統計卡-->
         <article class="recap-card"><span>第二季</span><strong>33</strong><small>場演出</small></article>
+        <!--第三季統計卡-->
         <article class="recap-card"><span>第三季</span><strong>20</strong><small>場演出</small></article>
+        <!--第四季統計卡-->
         <article class="recap-card"><span>第四季</span><strong>6</strong><small>場演出</small></article>
       </div>
 
+      <!--年度回顧頁-年度歌曲演出機率-->
       <section class="recap-section" aria-labelledby="recap-ranking-title">
+        <!--歌曲機率-區塊標題-->
         <h2 id="recap-ranking-title" class="recap-section-title">年度歌曲演出機率</h2>
+        <!--歌曲機率-計算方式說明-->
         <p class="section-description">依目前已匯入的年度演出歌單資料計算歌曲出現比例，資料增加時會重新計算。</p>
+        <!--歌曲機率-由script.js動態產生排行-->
         <div id="ranking-list" class="ranking-list"></div>
       </section>
     </div>
   </main>
 
+  <!--全站共用-頁尾資訊-->
   <footer class="site-footer"><p>BandRecords · 跟館青出去走一走</p></footer>
 
+  <!--載入共用JavaScript功能-->
   <script src="script.js"></script>
 </body>
 </html>
