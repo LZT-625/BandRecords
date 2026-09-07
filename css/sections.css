@@ -136,15 +136,16 @@
   min-height: 0;
 }
 
-/*即將到來的演出-單一活動卡：日期、預留區、活動資訊、詳細資料四欄*/
+/*即將到來的演出-單一活動卡：日期、活動資訊、詳細資料三欄；紅色預留區僅為示意，不在正式網站顯示*/
 .upcoming-event-card {
   width: 100%;
   min-height: 0;
   flex: 1 1 0;
   padding: 0;
   display: grid;
-  grid-template-columns: minmax(180px, 18%) minmax(88px, 7%) minmax(0, 1fr) 90px;
+  grid-template-columns: minmax(230px, 24%) minmax(0, 1fr) 90px;
   align-items: stretch;
+  column-gap: 32px;
   background: #ffffff;
   border: 1px solid var(--line);
   cursor: pointer;
@@ -160,10 +161,10 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
-/*即將到來的演出-日期區塊：固定寬度，避免5.25與12.31排列不一致*/
+/*即將到來的演出-日期左側區塊：固定寬度並讓日期與星期垂直置中*/
 .upcoming-event-date-block {
   min-width: 0;
-  padding: 18px 18px;
+  padding: 18px 18px 18px 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -179,7 +180,7 @@
   min-width: 0;
 }
 
-/*即將到來的演出-月份與日期，例如「5.25」；預留5字元寬度對齊12.31*/
+/*即將到來的演出-月份與日期，例如「5.25」；固定5位字元寬度並靠右對齊，確保7.25與11.01視覺位置一致*/
 .upcoming-event-date {
   display: inline-block;
   width: 5.2ch;
@@ -190,6 +191,7 @@
   letter-spacing: -0.04em;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 /*即將到來的演出-星期直式顯示*/
@@ -217,25 +219,10 @@
   white-space: nowrap;
 }
 
-/*即將到來的演出-預留空白區*/
-.upcoming-event-reserved {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  background: #ad3035;
-  color: #ffffff;
-  text-align: center;
-  font-size: clamp(13px, 1.2vw, 17px);
-  font-weight: 800;
-  line-height: 1.45;
-}
-
 /*即將到來的演出-活動名稱與主要資訊外層*/
 .upcoming-event-main {
   min-width: 0;
-  padding: 18px 26px;
+  padding: 18px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -283,6 +270,11 @@
   line-height: 1.35;
 }
 
+/*即將到來的演出-不顯示示意圖中的紅色預留區；保留此類別方便後續維護*/
+.upcoming-event-reserved {
+  display: none;
+}
+
 /*即將到來的演出-公開頁面不顯示GO狀態*/
 .upcoming-event-status {
   display: none;
@@ -308,12 +300,12 @@
 
   /*RWD-活動卡欄位縮小*/
   .upcoming-event-card {
-    grid-template-columns: minmax(150px, 25%) minmax(72px, 8%) minmax(0, 1fr) 78px;
+    grid-template-columns: minmax(180px, 26%) minmax(0, 1fr) 78px;
+    column-gap: 24px;
   }
 
-  .upcoming-event-main {
-    padding-left: 18px;
-    padding-right: 18px;
+  .upcoming-event-date-block {
+    padding-left: 20px;
   }
 }
 
@@ -366,17 +358,13 @@
     grid-template-columns: 1fr 78px;
     grid-template-rows: auto auto auto;
     min-height: 180px;
+    column-gap: 0;
   }
 
   .upcoming-event-date-block {
     grid-column: 1;
     grid-row: 1;
     padding: 18px 20px 10px;
-  }
-
-  .upcoming-event-reserved {
-    grid-column: 2;
-    grid-row: 1 / span 2;
   }
 
   .upcoming-event-main {
@@ -412,6 +400,7 @@
   }
 
   .upcoming-event-card {
+    flex: 1 1 0;
     min-height: 190px;
   }
 }
