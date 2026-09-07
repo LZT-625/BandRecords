@@ -102,7 +102,7 @@
   line-height: 1.7;
 }
 
-/*即將到來的演出-latest_event-讓標題與三個活動完整填滿單一螢幕高度*/
+/*即將到來的演出-latest_event-整個區塊的高度與螢幕完整顯示設定*/
 #latest_event {
   height: calc(100vh - 80px);
   min-height: calc(100vh - 80px);
@@ -317,3 +317,5 @@
     flex: 1 1 0;
   }
 }
+
+/*本區塊維護重點：桌面版標題＋三張活動卡需完整落在單一視窗內*/
