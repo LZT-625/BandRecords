@@ -235,7 +235,7 @@
   line-height: 1.2;
 }
 
-/*即將到來的演出-活動類型與簡易地點*/
+/*即將到來的演出-活動類型、票務狀態與簡易地點*/
 .upcoming-event-meta {
   display: flex;
   flex-wrap: wrap;
@@ -248,12 +248,26 @@
   line-height: 1.3;
 }
 
-/*即將到來的演出-活動類型*/
+/*即將到來的演出-活動類型不加底色，底色標籤專供付費／免費欄位*/
 .upcoming-event-type {
+  color: var(--text);
+}
+
+/*即將到來的演出-票務狀態標籤，只有fee欄位填寫付費／免費時才顯示*/
+.upcoming-event-fee {
   padding: 3px 12px;
   border-radius: 8px;
-  background: #202020;
   color: #ffffff;
+}
+
+/*即將到來的演出-付費票務狀態*/
+.upcoming-event-fee--paid {
+  background: #ad3035;
+}
+
+/*即將到來的演出-免費票務狀態*/
+.upcoming-event-fee--free {
+  background: #8fc8b0;
 }
 
 /*即將到來的演出-活動右側詳細資料入口*/
