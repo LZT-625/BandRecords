@@ -26,6 +26,7 @@ function formatWeekdayParts(dateString) {
   return { prefix: '周', day: weekday };
 }
 
+/*日期格式-完整日期，主要供彈出視窗使用*/
 function formatDate(dateString) {
   const date = getEventDate(dateString);
   if (!date) return '日期未設定';
@@ -36,11 +37,13 @@ function formatDate(dateString) {
   }).format(date);
 }
 
+/*日期格式-完整星期文字*/
 function formatWeekday(dateString) {
   const parts = formatWeekdayParts(dateString);
   return `${parts.prefix}${parts.day}`;
 }
 
+/*日期格式-活動日期與演出時間，主要供彈出視窗使用*/
 function formatEventDateTime(event) {
   const dateText = event.date ? formatDate(event.date) : '日期未設定';
   if (event.end_date && event.end_date !== event.date) {
@@ -54,6 +57,14 @@ function formatEventDateTime(event) {
 
 function cleanCity(city) {
   return String(city || '').replace(/^.*?\|\s*/, '').trim() || '未設定';
+}
+
+/*地點名稱-移除預先輸入的emoji/icon，避免未來手動建立活動時固定顯示icon*/
+function cleanLocationName(value) {
+  return String(value || '')
+    .trim()
+    .replace(/^(?:\p{Extended_Pictographic}|\uFE0F|\u200D|\s)+/u, '')
+    .trim();
 }
 
 function escapeHtml(value) {
@@ -99,16 +110,17 @@ function renderEvent(event) {
   item.type = 'button';
   item.className = 'event-item event-item-button';
   const weekday = formatWeekdayParts(event.date);
+  const locationName = cleanLocationName(event.location_name || event.venue);
   item.innerHTML = `
-    <!--演出紀錄頁-日期區塊：大日期＋直式星期--> 
+    <!--演出紀錄頁-日期區塊：固定欄寬的大日期＋直式星期--> 
     <div class="event-date-block">
       <span class="event-date-number">${escapeHtml(formatShortDate(event.date))}</span>
       <span class="event-date-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
     </div>
-    <!--演出紀錄頁-活動名稱與基本資訊--> 
+    <!--演出紀錄頁-演出名稱與基本資訊--> 
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
+      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(locationName || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
     <!--演出紀錄頁-點擊活動後開啟詳細資料--> 
     <span class="event-arrow" aria-hidden="true">→</span>
@@ -117,13 +129,14 @@ function renderEvent(event) {
   return item;
 }
 
+/*演出詳細資料-開啟活動彈出視窗*/
 function openEvent(event) {
   if (!eventModal || !modalTitle || !modalContent) return;
 
   modalTitle.textContent = event.title || '演出詳細資料';
 
   const sourceUrl = String(event.source || '').trim();
-  const locationName = String(event.location_name || event.venue || '').trim();
+  const locationName = cleanLocationName(event.location_name || event.venue);
   const locationLink = buildGoogleMapsUrl(locationName);
 
   modalContent.innerHTML = `
@@ -247,24 +260,34 @@ function renderUpcomingEvents(events) {
 
   upcomingEvents.innerHTML = nextEvents.map((event, index) => {
     const weekday = formatWeekdayParts(event.date);
+    const locationName = cleanLocationName(event.location_name || event.venue);
+    const dateText = formatShortDate(event.date);
+    const hasTime = Boolean(event.is_datetime && event.time);
+
     return `
       <!--主頁-即將到來的演出-單一活動卡--> 
       <article class="upcoming-event-card" data-event-index="${index}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(event.title || '演出')} 詳細資料">
-        <!--主頁-活動日期：大日期＋直式星期--> 
+        <!--主頁-活動日期：固定欄寬＋直式星期＋演出時間--> 
         <div class="upcoming-event-date-block">
-          <span class="upcoming-event-date">${escapeHtml(formatShortDate(event.date))}</span>
-          <span class="upcoming-event-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
+          <div class="upcoming-event-date-row">
+            <span class="upcoming-event-date">${escapeHtml(dateText)}</span>
+            <span class="upcoming-event-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
+          </div>
+          ${hasTime ? `<span class="upcoming-event-time">${escapeHtml(event.end_time ? `${event.time}–${event.end_time}` : event.time)}</span>` : ''}
         </div>
-        <!--主頁-活動名稱與基本資訊--> 
+        <!--主頁-活動卡預留區：目前不放置其他資料--> 
+        <div class="upcoming-event-reserved" aria-hidden="true">此區為<br>保留空白</div>
+        <!--主頁-活動名稱、類型與地點--> 
         <div class="upcoming-event-main">
           <h3>${escapeHtml(event.title || '未命名演出')}</h3>
           <div class="upcoming-event-meta">
-            <span>${escapeHtml(event.type || '演出')}</span>
-            <span>${escapeHtml(event.venue || '地點未設定')}</span>
+            <span class="upcoming-event-type">${escapeHtml(event.type || '演出')}</span>
+            <span>at</span>
+            <span>${escapeHtml(locationName || '地點未設定')}</span>
           </div>
         </div>
-        <!--主頁-活動右側箭頭--> 
-        <span class="event-arrow" aria-hidden="true">→</span>
+        <!--主頁-活動右側詳細資料入口--> 
+        <div class="upcoming-event-detail" aria-hidden="true">查看<br>詳細資訊</div>
       </article>
     `;
   }).join('');
@@ -280,6 +303,7 @@ function renderUpcomingEvents(events) {
   });
 }
 
+/*年度回顧-歌曲演出機率*/
 function renderSongRanking(events) {
   if (!rankingList) return;
 
@@ -323,7 +347,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=11`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=12`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
