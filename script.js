@@ -5,9 +5,30 @@ const eventModal = document.querySelector('#event-modal');
 const modalTitle = document.querySelector('#modal-title');
 const modalContent = document.querySelector('#modal-content');
 
-function formatDate(dateString) {
+/*日期格式-取得活動日期*/
+function getEventDate(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return '日期未設定';
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+/*日期格式-取得月份與日期，顯示為「5.25」*/
+function formatShortDate(dateString) {
+  const date = getEventDate(dateString);
+  if (!date) return '日期未設定';
+  return `${date.getMonth() + 1}.${String(date.getDate()).padStart(2, '0')}`;
+}
+
+/*日期格式-取得星期，顯示為「周」＋「日」上下排列*/
+function formatWeekdayParts(dateString) {
+  const date = getEventDate(dateString);
+  if (!date) return { prefix: '周', day: '-' };
+  const weekday = ['日', '一', '二', '三', '四', '五', '六'][date.getDay()];
+  return { prefix: '周', day: weekday };
+}
+
+function formatDate(dateString) {
+  const date = getEventDate(dateString);
+  if (!date) return '日期未設定';
   return new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: '2-digit',
@@ -16,11 +37,8 @@ function formatDate(dateString) {
 }
 
 function formatWeekday(dateString) {
-  const date = new Date(`${dateString}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return '星期未設定';
-  return new Intl.DateTimeFormat('zh-TW', {
-    weekday: 'long'
-  }).format(date);
+  const parts = formatWeekdayParts(dateString);
+  return `${parts.prefix}${parts.day}`;
 }
 
 function formatEventDateTime(event) {
@@ -75,16 +93,24 @@ function renderSongList(songs) {
   `;
 }
 
+/*演出紀錄頁-單筆活動列*/
 function renderEvent(event) {
   const item = document.createElement('button');
   item.type = 'button';
   item.className = 'event-item event-item-button';
+  const weekday = formatWeekdayParts(event.date);
   item.innerHTML = `
-    <div class="event-date">${escapeHtml(event.date ? formatDate(event.date) : '日期未設定')}</div>
+    <!--演出紀錄頁-日期區塊：大日期＋直式星期--> 
+    <div class="event-date-block">
+      <span class="event-date-number">${escapeHtml(formatShortDate(event.date))}</span>
+      <span class="event-date-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
+    </div>
+    <!--演出紀錄頁-活動名稱與基本資訊--> 
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
       <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(event.venue || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
+    <!--演出紀錄頁-點擊活動後開啟詳細資料--> 
     <span class="event-arrow" aria-hidden="true">→</span>
   `;
   item.addEventListener('click', () => openEvent(event));
@@ -169,6 +195,7 @@ function getTodayStart() {
   return today;
 }
 
+/*主頁-即將到來的演出-只顯示接下來三場*/
 function renderUpcomingEvents(events) {
   if (!upcomingEvents) return;
 
@@ -186,22 +213,29 @@ function renderUpcomingEvents(events) {
     return;
   }
 
-  upcomingEvents.innerHTML = nextEvents.map((event, index) => `
-    <article class="upcoming-event-card" data-event-index="${index}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(event.title || '演出')} 詳細資料">
-      <div class="upcoming-event-date-block">
-        <span class="upcoming-event-date">${escapeHtml(formatEventDateTime(event))}</span>
-        <span class="upcoming-event-weekday">${escapeHtml(formatWeekday(event.date))}</span>
-      </div>
-      <div class="upcoming-event-main">
-        <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-        <div class="upcoming-event-meta">
-          <span>${escapeHtml(event.type || '演出')}</span>
-          <span>${escapeHtml(event.venue || '地點未設定')}</span>
+  upcomingEvents.innerHTML = nextEvents.map((event, index) => {
+    const weekday = formatWeekdayParts(event.date);
+    return `
+      <!--主頁-即將到來的演出-單一活動卡--> 
+      <article class="upcoming-event-card" data-event-index="${index}" tabindex="0" role="button" aria-label="查看 ${escapeHtml(event.title || '演出')} 詳細資料">
+        <!--主頁-活動日期：大日期＋直式星期--> 
+        <div class="upcoming-event-date-block">
+          <span class="upcoming-event-date">${escapeHtml(formatShortDate(event.date))}</span>
+          <span class="upcoming-event-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
         </div>
-      </div>
-      <span class="event-arrow" aria-hidden="true">→</span>
-    </article>
-  `).join('');
+        <!--主頁-活動名稱與基本資訊--> 
+        <div class="upcoming-event-main">
+          <h3>${escapeHtml(event.title || '未命名演出')}</h3>
+          <div class="upcoming-event-meta">
+            <span>${escapeHtml(event.type || '演出')}</span>
+            <span>${escapeHtml(event.venue || '地點未設定')}</span>
+          </div>
+        </div>
+        <!--主頁-活動右側箭頭--> 
+        <span class="event-arrow" aria-hidden="true">→</span>
+      </article>
+    `;
+  }).join('');
 
   upcomingEvents.querySelectorAll('[data-event-index]').forEach((card, index) => {
     card.addEventListener('click', () => openEvent(nextEvents[index]));
@@ -257,7 +291,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=9`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=10`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
