@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <!--網頁基本設定-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>館青的作品｜跟館青出去走一走</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!--全站共用-最上方導覽列-->
   <header class="site-header">
     <nav class="navbar" aria-label="主要導覽">
+      <!--左側-網站名稱/Logo-->
       <a class="brand" href="index.html" aria-label="回到首頁"><div class="brand-logo"><span class="brand-logo-fallback">GGteens</span></div></a>
+      <!--中間-保留彈性空間-->
       <div class="nav-spacer" aria-hidden="true"></div>
+      <!--右側-網站主要分頁連結-->
       <div class="site-nav">
         <a href="event_review.html">演出紀錄</a>
         <a href="song_list.html">館青的作品</a>
@@ -19,16 +24,23 @@
     </nav>
   </header>
 
+  <!--館青的作品頁-main：歌曲資料庫-->
   <main class="page-main" id="song_list">
+    <!--館青的作品頁-主要內容容器-->
     <div class="section-shell page-shell">
+      <!--館青的作品頁-頁面標題-->
       <h1 class="page-title">館青的作品</h1>
+      <!--館青的作品頁-說明文字-->
       <p class="section-description">歌曲資料庫。以下先整理目前演出歌單中已取得 Spotify 連結的歌曲，後續可再擴充發行日期、專輯、作者等資料。</p>
+      <!--館青的作品頁-歌曲列表，由下方JavaScript動態產生-->
       <div id="song-database" class="song-database"></div>
     </div>
   </main>
 
+  <!--全站共用-頁尾資訊-->
   <footer class="site-footer"><p>BandRecords · 跟館青出去走一走</p></footer>
 
+  <!--歌曲資料庫-讀取Data/events.json並產生歌曲清單-->
   <script>
     async function loadSongs() {
       const container = document.querySelector('#song-database');
@@ -56,9 +68,13 @@
         container.innerHTML = '<p class="section-empty">歌曲資料暫時無法載入。</p>';
       }
     }
+
+    //歌曲資料庫-避免資料文字被當成HTML執行
     function escapeHtml(value) {
       return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
     }
+
+    //歌曲資料庫-啟動歌曲讀取
     loadSongs();
   </script>
 </body>
