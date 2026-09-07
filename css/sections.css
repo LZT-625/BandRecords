@@ -1,3 +1,4 @@
+/*主頁與首頁演出區塊-共同基本設定*/
 #mainpage,
 #latest_event {
   width: 100%;
@@ -6,6 +7,7 @@
   scroll-margin-top: 80px;
 }
 
+/*主頁-mainpage-左右兩欄比例設定：home 75%、news 25%*/
 #mainpage {
   min-height: 100vh;
   display: grid;
@@ -15,6 +17,7 @@
   background: #d8d3c8;
 }
 
+/*主頁-home-左側歡迎區，背景圖片與標題內容都放在此區*/
 .home {
   min-width: 0;
   min-height: 100%;
@@ -28,23 +31,23 @@
   color: #ffffff;
 }
 
-/*主頁-設定*/
+/*主頁-home-設定：控制標題與副標題靠左、靠下的位置*/
 .home-copy {
   width: 100%;
   padding: 0 6vw 8vh;
 }
 
-/*主頁-大標題*/
+/*主頁-home-大標題：控制「跟館青出去走一走」文字大小與最大寬度*/
 .home-copy h1 {
-    max-width: 75%;
-    margin: 0 0 12px;
-    font-size: clamp(42px, 5.4vw, 82px);
-    font-weight: 900;
-    line-height: 1.15;
-    letter-spacing: -0.03em;
+  max-width: 75%;
+  margin: 0 0 12px;
+  font-size: clamp(42px, 5.4vw, 82px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
-/*主頁-副標題*/
+/*主頁-home-副標題：控制「今天又要走去哪呢？」文字大小與最大寬度*/
 .home-copy p {
   max-width: 35%;
   margin: 0;
@@ -53,7 +56,7 @@
   line-height: 1.35;
 }
 
-/*最近大事-主設定*/
+/*主頁-news-右側最近大事區，寬度由mainpage的25%決定*/
 .news {
   min-width: 0;
   min-height: 100%;
@@ -65,33 +68,33 @@
   color: #ffffff;
 }
 
-/*最近大事-大標*/
-.news h2 { 
+/*最近大事-news-大標題*/
+.news h2 {
   margin: 0 0 16px;
   font-size: clamp(28px, 3vw, 44px);
   line-height: 1.2;
 }
 
-/*最近大事-排佈限制*/
+/*最近大事-news-事件列表排列方式*/
 .news-list {
   display: flex;
   flex-direction: column;
 }
 
-/*最近大事-區塊限制*/
+/*最近大事-news-單一事件區塊與上下分隔線*/
 .news-card {
   padding: 18px 0;
   border-top: 1px solid rgba(255,255,255,0.28);
 }
 
-/*最近大事-中標*/
+/*最近大事-news-事件中標題*/
 .news-card h3 {
   margin: 0 0 6px;
   font-size: clamp(18px, 1.7vw, 24px);
   line-height: 1.35;
 }
 
-/*最近大事-說明文字*/
+/*最近大事-news-事件詳細說明文字*/
 .news-card p {
   margin: 0;
   color: rgba(255,255,255,0.78);
@@ -99,31 +102,31 @@
   line-height: 1.7;
 }
 
-/*即將到來的演出-區塊設定*/
+/*即將到來的演出-latest_event-整個區塊的高度、上下左右留白*/
 #latest_event {
-    min-height: 100%;
-    padding-top: 8vw;
-    padding-right: 7vw;
-    padding-left: 7vw;
-    padding-bottom: 4vw;
-    background: var(--section-light);
+  min-height: 100%;
+  padding-top: 8vw;
+  padding-right: 7vw;
+  padding-left: 7vw;
+  padding-bottom: 4vw;
+  background: var(--section-light);
 }
 
-/*即將到來的演出-主要內容條列顯示設定*/
+/*即將到來的演出-主要內容容器，讓標題與活動列共同分配空間*/
 .latest-event-shell {
   min-height: calc(100vh - 20px);
   display: flex;
   flex-direction: column;
 }
 
-/*即將到來的演出-標題*/
+/*即將到來的演出-標題區，減少標題與活動內容之間的空白*/
 .latest-event-heading {
   margin-bottom: 10px;
   padding-top: 0;
   flex: 0 0 auto;
 }
 
-/*即將到來的演出-活動卡條列設定*/
+/*即將到來的演出-三個活動的縱向排列與間距*/
 .upcoming-events-list {
   display: flex;
   flex-direction: column;
@@ -132,35 +135,37 @@
   min-height: 0;
 }
 
-/*即將到來的演出-活動卡設定*/
+/*即將到來的演出-單一活動卡：目前以約20%高度作為測試*/
 .upcoming-event-card {
-    width: 100%;
-    height: 30%;
-    min-height: 0;
-    flex: 0 0 20%;
-    padding-top: 15px;
-    padding-right: 25px;
-    padding-left: 25px;
-    padding-bottom: 15px;
-    display: grid;
-    grid-template-columns: minmax(180px, 24%) minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 24px;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    cursor: pointer;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-    overflow: hidden;
-    margin-top: 0.75vw;
-    margin-bottom: 0.75vw;
+  width: 100%;
+  height: 30%;
+  min-height: 0;
+  flex: 0 0 20%;
+  padding-top: 15px;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-bottom: 15px;
+  display: grid;
+  grid-template-columns: minmax(180px, 24%) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+  margin-top: 0.75vw;
+  margin-bottom: 0.75vw;
 }
 
+/*即將到來的演出-活動卡滑過或鍵盤選取時的效果*/
 .upcoming-event-card:hover,
 .upcoming-event-card:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
+/*即將到來的演出-日期欄位外層*/
 .upcoming-event-date-block {
   min-width: 0;
   display: flex;
@@ -168,6 +173,7 @@
   gap: 4px;
 }
 
+/*即將到來的演出-日期*/
 .upcoming-event-date {
   color: var(--text);
   font-size: clamp(18px, 1.8vw, 27px);
@@ -175,6 +181,7 @@
   line-height: 1.25;
 }
 
+/*即將到來的演出-星期*/
 .upcoming-event-weekday {
   color: var(--muted);
   font-size: clamp(14px, 1.4vw, 18px);
@@ -182,16 +189,19 @@
   line-height: 1.25;
 }
 
+/*即將到來的演出-活動名稱與右側主要資訊外層*/
 .upcoming-event-main {
   min-width: 0;
 }
 
+/*即將到來的演出-活動名稱*/
 .upcoming-event-card h3 {
   margin: 0;
   font-size: clamp(22px, 2.4vw, 36px);
   line-height: 1.25;
 }
 
+/*即將到來的演出-活動類型與簡易地點等第二列資訊*/
 .upcoming-event-meta {
   display: flex;
   flex-wrap: wrap;
@@ -202,10 +212,12 @@
   font-weight: 700;
 }
 
+/*即將到來的演出-公開頁面不顯示GO狀態*/
 .upcoming-event-status {
   display: none;
 }
 
+/*RWD-中等螢幕：縮小主頁home比例並重新分配標題寬度*/
 @media (max-width: 1000px) {
   #mainpage {
     grid-template-columns: 70% 30%;
@@ -223,35 +235,42 @@
     max-width: 60%;
   }
 
+  /*RWD-活動卡日期欄縮小*/
   .upcoming-event-card {
     grid-template-columns: minmax(150px, 28%) minmax(0, 1fr) auto;
   }
 }
 
+/*RWD-手機版：主頁home與news改成上下排列*/
 @media (max-width: 700px) {
   #mainpage {
     grid-template-columns: 1fr;
     min-height: auto;
   }
 
+  /*RWD-手機版home增加最小顯示高度*/
   .home {
     min-height: 72vh;
   }
 
+  /*RWD-手機版news取消固定高度，依事件數量自然延伸*/
   .news {
     min-height: auto;
     padding: 36px 24px;
   }
 
+  /*RWD-手機版home標題改用固定左右內距*/
   .home-copy {
     padding: 0 24px 48px;
   }
 
+  /*RWD-手機版取消標題寬度限制*/
   .home-copy h1,
   .home-copy p {
     max-width: 100%;
   }
 
+  /*RWD-手機版即將到來的演出區縮小左右留白*/
   #latest_event {
     min-height: 100vh;
     padding-top: 20px;
@@ -260,10 +279,12 @@
     padding-bottom: 20px;
   }
 
+  /*RWD-手機版活動列表仍維持一個視窗內的配置*/
   .latest-event-shell {
     min-height: calc(100vh - 20px);
   }
 
+  /*RWD-手機版活動卡改成單欄*/
   .upcoming-event-card {
     height: auto;
     flex: 1 1 0;
@@ -273,6 +294,7 @@
   }
 }
 
+/*RWD-小手機：進一步縮小home標題與演出卡*/
 @media (max-width: 500px) {
   .home-copy h1 {
     font-size: clamp(34px, 11vw, 48px);
