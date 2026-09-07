@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <!--網頁基本設定-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>演出紀錄｜跟館青出去走一走</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!--全站共用-最上方導覽列-->
   <header class="site-header">
     <nav class="navbar" aria-label="主要導覽">
+      <!--左側-網站名稱/Logo-->
       <a class="brand" href="index.html" aria-label="回到首頁"><div class="brand-logo"><span class="brand-logo-fallback">GGteens</span></div></a>
+      <!--中間-保留彈性空間-->
       <div class="nav-spacer" aria-hidden="true"></div>
+      <!--右側-網站主要分頁連結-->
       <div class="site-nav">
         <a href="event_review.html">演出紀錄</a>
         <a href="song_list.html">館青的作品</a>
@@ -19,24 +24,38 @@
     </nav>
   </header>
 
+  <!--演出紀錄頁-main：完整演出資料頁面-->
   <main class="page-main" id="event_review">
+    <!--演出紀錄頁-主要內容容器-->
     <div class="section-shell page-shell">
+      <!--演出紀錄頁-頁面標題-->
       <h1 class="page-title">演出紀錄</h1>
+      <!--演出紀錄頁-說明文字-->
       <p class="section-description">2026 年已進行與即將進行的演出一覽。點擊任一演出可查看詳細資料。</p>
+      <!--演出紀錄頁-活動列表，由script.js動態產生-->
       <div id="event-list" class="event-list"></div>
     </div>
   </main>
 
+  <!--演出詳細資料-點擊活動後開啟的彈出視窗-->
   <div id="event-modal" class="modal" aria-hidden="true">
+    <!--彈出視窗-背景遮罩，點擊可關閉-->
     <div class="modal-backdrop" data-close-modal></div>
+    <!--彈出視窗-主要內容區-->
     <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <!--彈出視窗-關閉按鈕-->
       <button class="modal-close" type="button" aria-label="關閉" data-close-modal>×</button>
+      <!--彈出視窗-標題-->
       <h2 id="modal-title">演出詳細資料</h2>
+      <!--彈出視窗-詳細資料由script.js動態填入-->
       <div id="modal-content" class="detail-layout"></div>
     </article>
   </div>
 
+  <!--全站共用-頁尾資訊-->
   <footer class="site-footer"><p>BandRecords · 跟館青出去走一走</p></footer>
+
+  <!--載入共用JavaScript功能-->
   <script src="script.js"></script>
 </body>
 </html>
