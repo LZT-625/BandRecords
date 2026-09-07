@@ -9,7 +9,7 @@
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: 150px 1fr auto 28px;
+  grid-template-columns: 180px 1fr 28px;
   gap: 20px;
   align-items: center;
   padding: 22px 0;
@@ -35,9 +35,37 @@
   transform: translateX(4px);
 }
 
-/*演出紀錄頁-演出日期*/
-.event-date {
-  font-weight: 700;
+/*演出紀錄頁-日期區塊：大日期＋直式星期*/
+.event-date-block {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/*演出紀錄頁-月份與日期，例如「5.25」*/
+.event-date-number {
+  color: var(--text);
+  font-size: clamp(34px, 4vw, 58px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+/*演出紀錄頁-星期直式顯示*/
+.event-date-weekday {
+  min-width: 30px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text);
+  font-size: clamp(12px, 1.2vw, 17px);
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 /*演出紀錄頁-演出名稱*/
@@ -53,6 +81,7 @@
 
 /*演出紀錄頁-演出狀態標籤，目前公開頁面不顯示GO狀態*/
 .event-status {
+  display: none;
   font-size: 13px;
   padding: 4px 10px;
   border: 1px solid var(--line);
@@ -70,18 +99,30 @@
 @media (max-width: 700px) {
   .event-item {
     grid-template-columns: 1fr 28px;
-    gap: 6px;
+    gap: 12px;
   }
 
-  /*RWD-演出狀態放到主要內容下一列*/
-  .event-status {
+  /*RWD-手機版日期與星期保持橫向日期卡形式*/
+  .event-date-block {
+    grid-column: 1;
     width: fit-content;
+  }
+
+  /*RWD-演出名稱移到日期下一列*/
+  .event-main {
     grid-column: 1;
   }
 
-  /*RWD-箭頭固定在右側並跨越多列*/
+  /*RWD-箭頭固定在右側並跨越主要內容*/
   .event-arrow {
     grid-column: 2;
-    grid-row: 1 / span 3;
+    grid-row: 1 / span 2;
+  }
+}
+
+@media (max-width: 500px) {
+  /*RWD-小手機日期縮小，避免日期佔據過多橫向空間*/
+  .event-date-number {
+    font-size: clamp(32px, 14vw, 48px);
   }
 }
