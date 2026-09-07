@@ -35,7 +35,7 @@
   transform: translateX(4px);
 }
 
-/*演出紀錄頁-日期區塊：大日期＋直式星期*/
+/*演出紀錄頁-日期區塊：固定欄寬的大日期＋直式星期*/
 .event-date-block {
   min-width: 0;
   display: flex;
@@ -43,14 +43,17 @@
   gap: 12px;
 }
 
-/*演出紀錄頁-月份與日期，例如「5.25」*/
+/*演出紀錄頁-月份與日期，例如「5.25」；預留5字元寬度對齊12.31*/
 .event-date-number {
+  display: inline-block;
+  width: 5.2ch;
   color: var(--text);
   font-size: clamp(34px, 4vw, 58px);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 /*演出紀錄頁-星期直式顯示*/
@@ -121,7 +124,7 @@
 }
 
 @media (max-width: 500px) {
-  /*RWD-小手機日期縮小，避免日期佔據過多橫向空間*/
+  /*RWD-小手機日期縮小，保留固定5字元寬度*/
   .event-date-number {
     font-size: clamp(32px, 14vw, 48px);
   }
