@@ -136,17 +136,15 @@
   min-height: 0;
 }
 
-/*即將到來的演出-單一活動卡：三張卡平均分配剩餘高度*/
+/*即將到來的演出-單一活動卡：日期、預留區、活動資訊、詳細資料四欄*/
 .upcoming-event-card {
   width: 100%;
-  height: auto;
   min-height: 0;
   flex: 1 1 0;
-  padding: 15px 25px;
+  padding: 0;
   display: grid;
-  grid-template-columns: minmax(180px, 24%) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 24px;
+  grid-template-columns: minmax(180px, 18%) minmax(88px, 7%) minmax(0, 1fr) 90px;
+  align-items: stretch;
   background: #ffffff;
   border: 1px solid var(--line);
   cursor: pointer;
@@ -162,22 +160,36 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
-/*即將到來的演出-日期左側區塊*/
+/*即將到來的演出-日期區塊：固定寬度，避免5.25與12.31排列不一致*/
 .upcoming-event-date-block {
   min-width: 0;
+  padding: 18px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/*即將到來的演出-日期與星期同列*/
+.upcoming-event-date-row {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
-/*即將到來的演出-月份與日期，例如「5.25」*/
+/*即將到來的演出-月份與日期，例如「5.25」；預留5字元寬度對齊12.31*/
 .upcoming-event-date {
+  display: inline-block;
+  width: 5.2ch;
   color: var(--text);
-  font-size: clamp(30px, 3.4vw, 52px);
+  font-size: clamp(30px, 3.2vw, 50px);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 /*即將到來的演出-星期直式顯示*/
@@ -195,27 +207,80 @@
   white-space: nowrap;
 }
 
+/*即將到來的演出-日期下方演出時間*/
+.upcoming-event-time {
+  margin-left: 2px;
+  color: var(--text);
+  font-size: clamp(13px, 1.2vw, 17px);
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/*即將到來的演出-預留空白區*/
+.upcoming-event-reserved {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: #ad3035;
+  color: #ffffff;
+  text-align: center;
+  font-size: clamp(13px, 1.2vw, 17px);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 /*即將到來的演出-活動名稱與主要資訊外層*/
 .upcoming-event-main {
   min-width: 0;
+  padding: 18px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /*即將到來的演出-活動名稱*/
 .upcoming-event-card h3 {
   margin: 0;
-  font-size: clamp(20px, 2.15vw, 34px);
-  line-height: 1.25;
+  font-size: clamp(21px, 2.2vw, 35px);
+  line-height: 1.2;
 }
 
 /*即將到來的演出-活動類型與簡易地點*/
 .upcoming-event-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px 22px;
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: clamp(14px, 1.3vw, 17px);
-  font-weight: 700;
+  align-items: center;
+  gap: 6px 18px;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/*即將到來的演出-活動類型*/
+.upcoming-event-type {
+  padding: 3px 12px;
+  border-radius: 8px;
+  background: #202020;
+  color: #ffffff;
+}
+
+/*即將到來的演出-活動右側詳細資料入口*/
+.upcoming-event-detail {
+  min-width: 0;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  text-align: center;
+  font-size: clamp(15px, 1.5vw, 21px);
+  font-weight: 900;
+  line-height: 1.35;
 }
 
 /*即將到來的演出-公開頁面不顯示GO狀態*/
@@ -241,9 +306,14 @@
     max-width: 60%;
   }
 
-  /*RWD-活動卡日期欄縮小*/
+  /*RWD-活動卡欄位縮小*/
   .upcoming-event-card {
-    grid-template-columns: minmax(150px, 28%) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(150px, 25%) minmax(72px, 8%) minmax(0, 1fr) 78px;
+  }
+
+  .upcoming-event-main {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 }
 
@@ -290,12 +360,36 @@
     min-height: calc(100vh - 40px);
   }
 
-  /*RWD-手機版活動卡改為單欄排列*/
+  /*RWD-手機版活動卡改成上下內容配置*/
   .upcoming-event-card {
     flex: 1 1 0;
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 18px 20px;
+    grid-template-columns: 1fr 78px;
+    grid-template-rows: auto auto auto;
+    min-height: 180px;
+  }
+
+  .upcoming-event-date-block {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 18px 20px 10px;
+  }
+
+  .upcoming-event-reserved {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .upcoming-event-main {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 8px 20px 18px;
+  }
+
+  .upcoming-event-detail {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    min-height: 46px;
+    border-top: 1px solid var(--line);
   }
 }
 
@@ -313,8 +407,12 @@
     font-size: clamp(28px, 13vw, 44px);
   }
 
+  .upcoming-event-date-row {
+    gap: 8px;
+  }
+
   .upcoming-event-card {
-    flex: 1 1 0;
+    min-height: 190px;
   }
 }
 
