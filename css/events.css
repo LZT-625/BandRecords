@@ -4,12 +4,12 @@
   gap: 0;
 }
 
-/*演出紀錄頁-單一演出資料列：日期欄與活動簡易資料之間保留明顯間距*/
+/*演出紀錄頁-單一演出資料列：日期欄與活動簡易資料之間保留明顯留白*/
 .event-item {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 28px;
+  grid-template-columns: 260px 1fr 28px;
   gap: 56px;
   align-items: center;
   padding: 22px 0;
@@ -77,7 +77,7 @@
   margin-bottom: 4px;
 }
 
-/*演出紀錄頁-僅顯示詳細地址與演出時間，不重複顯示縣市／區域*/
+/*演出紀錄頁-地點與演出時間等輔助資訊，不重複顯示縣市／區域*/
 .event-meta {
   color: var(--muted);
   font-size: 14px;

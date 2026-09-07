@@ -110,17 +110,17 @@ function renderEvent(event) {
   item.type = 'button';
   item.className = 'event-item event-item-button';
   const weekday = formatWeekdayParts(event.date);
-  const detailAddress = String(event.address || '').trim();
+  const locationName = cleanLocationName(event.location_name || event.venue);
   item.innerHTML = `
     <!--演出紀錄頁-日期區塊：固定欄寬的大日期＋直式星期--> 
     <div class="event-date-block">
       <span class="event-date-number">${escapeHtml(formatShortDate(event.date))}</span>
       <span class="event-date-weekday"><span>${escapeHtml(weekday.prefix)}</span><span>${escapeHtml(weekday.day)}</span></span>
     </div>
-    <!--演出紀錄頁-演出名稱與基本資訊--> 
+    <!--演出紀錄頁-演出名稱與基本資訊；地點顯示完整地點名稱，不重複前置縣市--> 
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-      <div class="event-meta">${escapeHtml(detailAddress || '詳細地址未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
+      <div class="event-meta">${escapeHtml(locationName || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
     <!--演出紀錄頁-點擊活動後開啟詳細資料--> 
     <span class="event-arrow" aria-hidden="true">→</span>
@@ -194,42 +194,77 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeModal();
 });
 
-/*主頁-正式上線的換頁滾動模式：開啟固定在mainpage，第一次向下滾動自動定位latest_event*/
+/*主頁-正式上線的換頁滾動模式：每次滾輪只移動一個主頁區塊，可向上與向下切換*/
 function setupHomepageScroll() {
   const mainpage = document.querySelector('#mainpage');
-  const latestEvent = document.querySelector('#latest_event');
-  if (!mainpage || !latestEvent) return;
+  if (!mainpage) return;
 
-  /*首頁開啟時強制回到mainpage頂端*/
+  /*主頁所有main > section均視為可切換區塊；未來新增區塊會自動納入*/
+  const getSections = () => Array.from(document.querySelectorAll('main > section'));
+
+  /*首頁開啟時固定回到第一個區塊；網址有hash時不強制改動*/
   if (window.location.hash === '') {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 
   let isAutoScrolling = false;
-  let hasSnappedToLatestEvent = false;
+  let wheelReleaseTimer = null;
 
-  /*首頁換頁滾動：改在window層級監聽，避免滑鼠位於導覽列或其他子元素時漏接滾輪事件*/
+  /*主頁底層滾動邏輯：每次滾輪事件只切換一個section，向上與向下皆可*/
   const handleHomepageWheel = event => {
-    if (event.deltaY <= 0) return;
+    if (event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (eventModal?.classList.contains('is-open')) return;
 
-    /*第一次向下滾動前，頁面仍位於mainpage頂端*/
-    if (!hasSnappedToLatestEvent && window.scrollY <= 8 && !isAutoScrolling) {
+    const pageSections = getSections();
+    if (pageSections.length < 2) return;
+
+    if (isAutoScrolling) {
       event.preventDefault();
-      isAutoScrolling = true;
-      hasSnappedToLatestEvent = true;
-
-      latestEvent.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-
-      window.setTimeout(() => {
-        /*動畫結束後再次校正位置，確保latest_event頂端對齊固定導覽列*/
-        const latestTop = Math.max(0, latestEvent.getBoundingClientRect().top + window.scrollY - 80);
-        window.scrollTo({ top: latestTop, left: 0, behavior: 'auto' });
-        isAutoScrolling = false;
-      }, 850);
+      return;
     }
+
+    const delta = event.deltaY;
+    if (Math.abs(delta) < 1) return;
+
+    const currentScroll = window.scrollY;
+    const headerOffset = 80;
+
+    /*找出目前最接近視窗定位點的section*/
+    let currentIndex = 0;
+    let smallestDistance = Infinity;
+
+    pageSections.forEach((section, index) => {
+      const sectionTop = Math.max(0, section.offsetTop - headerOffset);
+      const distance = Math.abs(sectionTop - currentScroll);
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+        currentIndex = index;
+      }
+    });
+
+    const direction = delta > 0 ? 1 : -1;
+    const targetIndex = Math.max(0, Math.min(pageSections.length - 1, currentIndex + direction));
+
+    /*位於第一區向上或最後一區向下時，不攔截瀏覽器原生滾動*/
+    if (targetIndex === currentIndex) return;
+
+    event.preventDefault();
+    isAutoScrolling = true;
+    window.clearTimeout(wheelReleaseTimer);
+
+    const targetSection = pageSections[targetIndex];
+    const targetTop = Math.max(0, targetSection.offsetTop - headerOffset);
+
+    window.scrollTo({
+      top: targetTop,
+      left: 0,
+      behavior: 'smooth'
+    });
+
+    /*鎖定短暫時間，避免同一個滾輪／觸控板手勢連續跳過多區*/
+    wheelReleaseTimer = window.setTimeout(() => {
+      isAutoScrolling = false;
+    }, 750);
   };
 
   window.addEventListener('wheel', handleHomepageWheel, { passive: false });
@@ -284,12 +319,12 @@ function renderUpcomingEvents(events) {
           </div>
           ${hasTime ? `<span class="upcoming-event-time">${escapeHtml(event.end_time ? `${event.time}–${event.end_time}` : event.time)}</span>` : ''}
         </div>
-        <!--主頁-活動名稱、活動類型、票務狀態與地點--> 
+        <!--主頁-活動名稱、活動類型、票務狀態與地點；目前活動類型維持純文字--> 
         <div class="upcoming-event-main">
           <h3>${escapeHtml(event.title || '未命名演出')}</h3>
           <div class="upcoming-event-meta">
             ${feeText ? `<span class="upcoming-event-fee upcoming-event-fee--${feeText === '免費' ? 'free' : 'paid'}">${escapeHtml(feeText)}</span>` : ''}
-            <span class="upcoming-event-type">${escapeHtml(event.type || '演出')}</span>
+            <span>${escapeHtml(event.type || '演出')}</span>
             <span>at</span>
             <span>${escapeHtml(locationName || '地點未設定')}</span>
           </div>
@@ -355,7 +390,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=13`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=12`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
