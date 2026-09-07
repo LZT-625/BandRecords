@@ -110,7 +110,7 @@ function renderEvent(event) {
   item.type = 'button';
   item.className = 'event-item event-item-button';
   const weekday = formatWeekdayParts(event.date);
-  const locationName = cleanLocationName(event.location_name || event.venue);
+  const detailAddress = String(event.address || '').trim();
   item.innerHTML = `
     <!--演出紀錄頁-日期區塊：固定欄寬的大日期＋直式星期--> 
     <div class="event-date-block">
@@ -120,7 +120,7 @@ function renderEvent(event) {
     <!--演出紀錄頁-演出名稱與基本資訊--> 
     <div class="event-main">
       <h3>${escapeHtml(event.title || '未命名演出')}</h3>
-      <div class="event-meta">${escapeHtml(cleanCity(event.city))} · ${escapeHtml(locationName || '地點未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
+      <div class="event-meta">${escapeHtml(detailAddress || '詳細地址未設定')}${event.is_datetime && event.time ? ` · ${escapeHtml(event.time)}` : ''}</div>
     </div>
     <!--演出紀錄頁-點擊活動後開啟詳細資料--> 
     <span class="event-arrow" aria-hidden="true">→</span>
@@ -194,37 +194,45 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeModal();
 });
 
-/*主頁-開啟時固定在mainpage，第一次向下滾動時自動定位到latest_event*/
+/*主頁-正式上線的換頁滾動模式：開啟固定在mainpage，第一次向下滾動自動定位latest_event*/
 function setupHomepageScroll() {
   const mainpage = document.querySelector('#mainpage');
   const latestEvent = document.querySelector('#latest_event');
   if (!mainpage || !latestEvent) return;
 
-  /*開啟首頁時回到mainpage最上方*/
+  /*首頁開啟時強制回到mainpage頂端*/
   if (window.location.hash === '') {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 
   let isAutoScrolling = false;
   let hasSnappedToLatestEvent = false;
 
-  /*首頁測試模式：滑鼠向下滾動時自動前往下一個完整區塊*/
-  mainpage.addEventListener('wheel', event => {
-    if (event.deltaY <= 0 || isAutoScrolling || hasSnappedToLatestEvent) return;
+  /*首頁換頁滾動：改在window層級監聽，避免滑鼠位於導覽列或其他子元素時漏接滾輪事件*/
+  const handleHomepageWheel = event => {
+    if (event.deltaY <= 0) return;
 
-    event.preventDefault();
-    isAutoScrolling = true;
-    hasSnappedToLatestEvent = true;
+    /*第一次向下滾動前，頁面仍位於mainpage頂端*/
+    if (!hasSnappedToLatestEvent && window.scrollY <= 8 && !isAutoScrolling) {
+      event.preventDefault();
+      isAutoScrolling = true;
+      hasSnappedToLatestEvent = true;
 
-    latestEvent.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+      latestEvent.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
 
-    window.setTimeout(() => {
-      isAutoScrolling = false;
-    }, 900);
-  }, { passive: false });
+      window.setTimeout(() => {
+        /*動畫結束後再次校正位置，確保latest_event頂端對齊固定導覽列*/
+        const latestTop = Math.max(0, latestEvent.getBoundingClientRect().top + window.scrollY - 80);
+        window.scrollTo({ top: latestTop, left: 0, behavior: 'auto' });
+        isAutoScrolling = false;
+      }, 850);
+    }
+  };
+
+  window.addEventListener('wheel', handleHomepageWheel, { passive: false });
 }
 
 function renderEvents(events) {
@@ -263,6 +271,7 @@ function renderUpcomingEvents(events) {
     const locationName = cleanLocationName(event.location_name || event.venue);
     const dateText = formatShortDate(event.date);
     const hasTime = Boolean(event.is_datetime && event.time);
+    const feeText = String(event.fee || '').trim();
 
     return `
       <!--主頁-即將到來的演出-單一活動卡--> 
@@ -275,10 +284,11 @@ function renderUpcomingEvents(events) {
           </div>
           ${hasTime ? `<span class="upcoming-event-time">${escapeHtml(event.end_time ? `${event.time}–${event.end_time}` : event.time)}</span>` : ''}
         </div>
-        <!--主頁-活動名稱、類型與地點--> 
+        <!--主頁-活動名稱、活動類型、票務狀態與地點--> 
         <div class="upcoming-event-main">
           <h3>${escapeHtml(event.title || '未命名演出')}</h3>
           <div class="upcoming-event-meta">
+            ${feeText ? `<span class="upcoming-event-fee upcoming-event-fee--${feeText === '免費' ? 'free' : 'paid'}">${escapeHtml(feeText)}</span>` : ''}
             <span class="upcoming-event-type">${escapeHtml(event.type || '演出')}</span>
             <span>at</span>
             <span>${escapeHtml(locationName || '地點未設定')}</span>
@@ -345,7 +355,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=12`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=13`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
