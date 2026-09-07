@@ -4,13 +4,13 @@
   gap: 0;
 }
 
-/*演出紀錄頁-單一演出資料列：擴大日期欄與活動資料間的預留空間*/
+/*演出紀錄頁-單一演出資料列：日期欄與活動簡易資料之間保留明顯間距*/
 .event-item {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: 230px 1fr 28px;
-  gap: 40px;
+  grid-template-columns: 260px minmax(0, 1fr) 28px;
+  gap: 56px;
   align-items: center;
   padding: 22px 0;
   border: 0;
@@ -77,10 +77,11 @@
   margin-bottom: 4px;
 }
 
-/*演出紀錄頁-城市、地點與時間等輔助資訊*/
+/*演出紀錄頁-僅顯示詳細地址與演出時間，不重複顯示縣市／區域*/
 .event-meta {
   color: var(--muted);
   font-size: 14px;
+  line-height: 1.6;
 }
 
 /*演出紀錄頁-演出狀態標籤，目前公開頁面不顯示GO狀態*/
@@ -99,11 +100,11 @@
   transition: transform 0.2s ease;
 }
 
-/*RWD-中等螢幕：縮小日期欄與活動資料間距*/
+/*RWD-中等螢幕：維持日期與簡易活動資料之間的明顯留白*/
 @media (max-width: 1000px) {
   .event-item {
-    grid-template-columns: 200px 1fr 28px;
-    gap: 28px;
+    grid-template-columns: 220px minmax(0, 1fr) 28px;
+    gap: 36px;
   }
 }
 
@@ -111,7 +112,7 @@
 @media (max-width: 700px) {
   .event-item {
     grid-template-columns: 1fr 28px;
-    gap: 12px;
+    gap: 16px;
   }
 
   /*RWD-手機版日期與星期保持橫向日期卡形式*/
