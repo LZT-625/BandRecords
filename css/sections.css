@@ -102,49 +102,47 @@
   line-height: 1.7;
 }
 
-/*即將到來的演出-latest_event-整個區塊的高度、上下左右留白*/
+/*即將到來的演出-latest_event-讓標題與三個活動完整填滿單一螢幕高度*/
 #latest_event {
-  min-height: 100%;
-  padding-top: 8vw;
-  padding-right: 7vw;
-  padding-left: 7vw;
-  padding-bottom: 4vw;
+  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
+  max-height: calc(100vh - 80px);
+  padding: 10px 7vw;
   background: var(--section-light);
+  overflow: hidden;
 }
 
-/*即將到來的演出-主要內容容器，讓標題與活動列共同分配空間*/
+/*即將到來的演出-主要內容容器，標題與活動共同分配剩餘高度*/
 .latest-event-shell {
-  min-height: calc(100vh - 20px);
+  height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
 
-/*即將到來的演出-標題區，減少標題與活動內容之間的空白*/
+/*即將到來的演出-標題區，控制標題與活動列距離*/
 .latest-event-heading {
   margin-bottom: 10px;
   padding-top: 0;
   flex: 0 0 auto;
 }
 
-/*即將到來的演出-三個活動的縱向排列與間距*/
+/*即將到來的演出-三個活動縱向排列並填滿標題下方剩餘空間*/
 .upcoming-events-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex: 1 1 auto;
   min-height: 0;
 }
 
-/*即將到來的演出-單一活動卡：目前以約20%高度作為測試*/
+/*即將到來的演出-單一活動卡：三張卡平均分配剩餘高度*/
 .upcoming-event-card {
   width: 100%;
-  height: 30%;
+  height: auto;
   min-height: 0;
-  flex: 0 0 20%;
-  padding-top: 15px;
-  padding-right: 25px;
-  padding-left: 25px;
-  padding-bottom: 15px;
+  flex: 1 1 0;
+  padding: 15px 25px;
   display: grid;
   grid-template-columns: minmax(180px, 24%) minmax(0, 1fr) auto;
   align-items: center;
@@ -154,8 +152,7 @@
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   overflow: hidden;
-  margin-top: 0.75vw;
-  margin-bottom: 0.75vw;
+  margin: 0;
 }
 
 /*即將到來的演出-活動卡滑過或鍵盤選取時的效果*/
@@ -165,31 +162,40 @@
   box-shadow: 0 12px 28px rgba(0,0,0,0.08);
 }
 
-/*即將到來的演出-日期欄位外層*/
+/*即將到來的演出-日期左側區塊*/
 .upcoming-event-date-block {
   min-width: 0;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 12px;
 }
 
-/*即將到來的演出-日期*/
+/*即將到來的演出-月份與日期，例如「5.25」*/
 .upcoming-event-date {
   color: var(--text);
-  font-size: clamp(18px, 1.8vw, 27px);
+  font-size: clamp(30px, 3.4vw, 52px);
   font-weight: 900;
-  line-height: 1.25;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
 }
 
-/*即將到來的演出-星期*/
+/*即將到來的演出-星期直式顯示*/
 .upcoming-event-weekday {
-  color: var(--muted);
-  font-size: clamp(14px, 1.4vw, 18px);
-  font-weight: 700;
-  line-height: 1.25;
+  min-width: 30px;
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text);
+  font-size: clamp(12px, 1.15vw, 16px);
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
-/*即將到來的演出-活動名稱與右側主要資訊外層*/
+/*即將到來的演出-活動名稱與主要資訊外層*/
 .upcoming-event-main {
   min-width: 0;
 }
@@ -197,11 +203,11 @@
 /*即將到來的演出-活動名稱*/
 .upcoming-event-card h3 {
   margin: 0;
-  font-size: clamp(22px, 2.4vw, 36px);
+  font-size: clamp(20px, 2.15vw, 34px);
   line-height: 1.25;
 }
 
-/*即將到來的演出-活動類型與簡易地點等第二列資訊*/
+/*即將到來的演出-活動類型與簡易地點*/
 .upcoming-event-meta {
   display: flex;
   flex-wrap: wrap;
@@ -270,23 +276,22 @@
     max-width: 100%;
   }
 
-  /*RWD-手機版即將到來的演出區縮小左右留白*/
+  /*RWD-手機版即將到來的演出允許自然延伸高度，避免內容被裁切*/
   #latest_event {
-    min-height: 100vh;
-    padding-top: 20px;
-    padding-right: 25px;
-    padding-left: 25px;
-    padding-bottom: 20px;
-  }
-
-  /*RWD-手機版活動列表仍維持一個視窗內的配置*/
-  .latest-event-shell {
-    min-height: calc(100vh - 20px);
-  }
-
-  /*RWD-手機版活動卡改成單欄*/
-  .upcoming-event-card {
     height: auto;
+    min-height: 100vh;
+    max-height: none;
+    padding: 20px 24px;
+    overflow: visible;
+  }
+
+  .latest-event-shell {
+    height: auto;
+    min-height: calc(100vh - 40px);
+  }
+
+  /*RWD-手機版活動卡改為單欄排列*/
+  .upcoming-event-card {
     flex: 1 1 0;
     grid-template-columns: 1fr;
     gap: 6px;
@@ -294,7 +299,7 @@
   }
 }
 
-/*RWD-小手機：進一步縮小home標題與演出卡*/
+/*RWD-小手機：進一步縮小home標題與活動日期*/
 @media (max-width: 500px) {
   .home-copy h1 {
     font-size: clamp(34px, 11vw, 48px);
@@ -302,6 +307,10 @@
 
   .home-copy p {
     font-size: 20px;
+  }
+
+  .upcoming-event-date {
+    font-size: clamp(28px, 13vw, 44px);
   }
 
   .upcoming-event-card {
