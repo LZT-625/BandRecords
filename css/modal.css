@@ -1,3 +1,4 @@
+/*演出詳細資料-彈出視窗外層，固定覆蓋整個畫面*/
 .modal {
   display: none;
   position: fixed;
@@ -5,16 +6,19 @@
   z-index: 100000;
 }
 
+/*演出詳細資料-開啟狀態*/
 .modal.is-open {
   display: block;
 }
 
+/*演出詳細資料-背景遮罩*/
 .modal-backdrop {
   position: absolute;
   inset: 0;
   background: rgba(20, 20, 20, 0.68);
 }
 
+/*演出詳細資料-主要內容面板*/
 .modal-panel {
   position: relative;
   width: min(920px, calc(100% - 32px));
@@ -28,6 +32,7 @@
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
 }
 
+/*演出詳細資料-演出名稱，限制寬度讓長標題自然換行*/
 .modal-panel h2 {
   max-width: 25ch;
   margin: 0 56px 0 0;
@@ -36,6 +41,7 @@
   overflow-wrap: anywhere;
 }
 
+/*演出詳細資料-右上角關閉按鈕*/
 .modal-close {
   position: absolute;
   top: 14px;
@@ -50,14 +56,17 @@
   line-height: 1;
 }
 
+/*演出詳細資料-關閉按鈕滑過效果*/
 .modal-close:hover {
   background: var(--bg);
 }
 
+/*演出詳細資料-標題下方的詳細內容區*/
 .detail-layout {
   margin-top: 30px;
 }
 
+/*演出詳細資料-日期、類型、城市三欄摘要*/
 .detail-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -65,16 +74,19 @@
   border-bottom: 1px solid var(--line);
 }
 
+/*演出詳細資料-摘要中的單一欄位*/
 .detail-summary-item {
   min-width: 0;
   padding: 16px 18px;
   border-right: 1px solid var(--line);
 }
 
+/*演出詳細資料-摘要最後一欄取消右邊框*/
 .detail-summary-item:last-child {
   border-right: 0;
 }
 
+/*演出詳細資料-摘要欄位名稱*/
 .detail-summary-item span {
   display: block;
   margin-bottom: 8px;
@@ -83,6 +95,7 @@
   font-weight: 500;
 }
 
+/*演出詳細資料-摘要欄位內容*/
 .detail-summary-item strong {
   display: block;
   font-size: 16px;
@@ -90,20 +103,24 @@
   overflow-wrap: anywhere;
 }
 
+/*演出詳細資料-歌單、地址、來源等各內容區塊*/
 .detail-section {
   padding: 22px 0;
   border-bottom: 1px solid var(--line);
 }
 
+/*演出詳細資料-今日歌單區塊增加上方留白*/
 .detail-section--songs {
   padding-top: 28px;
 }
 
+/*演出詳細資料-來源連結為最後一區，取消底線*/
 .detail-section--source {
   border-bottom: 0;
   padding-bottom: 0;
 }
 
+/*演出詳細資料-各內容區塊標題*/
 .detail-section h3 {
   margin: 0 0 14px;
   color: var(--text);
@@ -111,12 +128,14 @@
   font-weight: 800;
 }
 
+/*演出詳細資料-一般文字內容*/
 .detail-value {
   margin: 0 0 10px;
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
+/*演出詳細資料-地址與來源等可點擊連結*/
 .detail-link {
   display: inline-block;
   margin-top: 2px;
@@ -125,6 +144,7 @@
   text-underline-offset: 4px;
 }
 
+/*演出詳細資料-沒有資料時的提示文字*/
 .detail-empty {
   margin: 0;
   color: var(--muted);
@@ -132,6 +152,7 @@
   line-height: 1.6;
 }
 
+/*演出詳細資料-歌曲清單*/
 .song-list {
   display: grid;
   gap: 4px;
@@ -140,6 +161,7 @@
   list-style: none;
 }
 
+/*演出詳細資料-單首歌曲連結*/
 .song-link {
   display: flex;
   gap: 10px;
@@ -150,16 +172,19 @@
   line-height: 1.5;
 }
 
+/*演出詳細資料-歌曲編號*/
 .song-link > span {
   flex: 0 0 auto;
   color: var(--muted);
 }
 
+/*演出詳細資料-Spotify歌曲連結滑過效果*/
 .song-link:not(.song-link--plain):hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+/*RWD-手機版彈出視窗縮小外距與內距*/
 @media (max-width: 700px) {
   .modal-panel {
     width: calc(100% - 20px);
@@ -168,21 +193,25 @@
     padding: 32px 22px 36px;
   }
 
+  /*RWD-手機版長標題取消25字寬度限制*/
   .modal-panel h2 {
     max-width: none;
     margin-right: 44px;
     font-size: 30px;
   }
 
+  /*RWD-摘要資料由三欄改成單欄*/
   .detail-summary {
     grid-template-columns: 1fr;
   }
 
+  /*RWD-摘要欄位改用下方分隔線*/
   .detail-summary-item {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
 
+  /*RWD-摘要最後一欄取消下方分隔線*/
   .detail-summary-item:last-child {
     border-bottom: 0;
   }
