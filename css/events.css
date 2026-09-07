@@ -4,13 +4,13 @@
   gap: 0;
 }
 
-/*演出紀錄頁-單一演出資料列*/
+/*演出紀錄頁-單一演出資料列：擴大日期欄與活動資料間的預留空間*/
 .event-item {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: 180px 1fr 28px;
-  gap: 20px;
+  grid-template-columns: 230px 1fr 28px;
+  gap: 40px;
   align-items: center;
   padding: 22px 0;
   border: 0;
@@ -40,10 +40,10 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-/*演出紀錄頁-月份與日期，例如「5.25」；預留5字元寬度對齊12.31*/
+/*演出紀錄頁-月份與日期：固定5位字元寬度，數字靠右對齊以保持7.25與11.01視覺位置一致*/
 .event-date-number {
   display: inline-block;
   width: 5.2ch;
@@ -54,6 +54,7 @@
   letter-spacing: -0.04em;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 /*演出紀錄頁-星期直式顯示*/
@@ -98,6 +99,14 @@
   transition: transform 0.2s ease;
 }
 
+/*RWD-中等螢幕：縮小日期欄與活動資料間距*/
+@media (max-width: 1000px) {
+  .event-item {
+    grid-template-columns: 200px 1fr 28px;
+    gap: 28px;
+  }
+}
+
 /*RWD-手機版演出資料列改成上下排列*/
 @media (max-width: 700px) {
   .event-item {
@@ -109,6 +118,7 @@
   .event-date-block {
     grid-column: 1;
     width: fit-content;
+    gap: 12px;
   }
 
   /*RWD-演出名稱移到日期下一列*/
@@ -124,7 +134,7 @@
 }
 
 @media (max-width: 500px) {
-  /*RWD-小手機日期縮小，保留固定5字元寬度*/
+  /*RWD-小手機日期縮小，保留固定5字元寬度並靠右對齊*/
   .event-date-number {
     font-size: clamp(32px, 14vw, 48px);
   }
