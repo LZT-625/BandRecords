@@ -1,3 +1,4 @@
+/*全站-CSS總入口：依序載入共用、導覽列、主頁區塊、演出列表與彈出視窗樣式*/
 @import url("./css/base.css");
 @import url("./css/nav.css");
 @import url("./css/sections.css");
