@@ -123,9 +123,8 @@ function openEvent(event) {
   modalTitle.textContent = event.title || '演出詳細資料';
 
   const sourceUrl = String(event.source || '').trim();
-  const addressText = String(event.address || '').trim();
-  const displayAddress = addressText || String(event.venue || '').trim();
-  const displayAddressLink = buildGoogleMapsUrl(displayAddress);
+  const locationName = String(event.location_name || event.venue || '').trim();
+  const locationLink = buildGoogleMapsUrl(locationName);
 
   modalContent.innerHTML = `
     <div class="detail-summary">
@@ -150,9 +149,9 @@ function openEvent(event) {
 
     <section class="detail-section">
       <h3>演出詳細地址</h3>
-      ${displayAddress
-        ? `<p class="detail-value"><a class="detail-link" href="${escapeHtml(displayAddressLink)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayAddress)}</a></p>`
-        : '<p class="detail-empty">目前尚未設定演出詳細地址。</p>'}
+      ${locationName
+        ? `<p class="detail-value"><a class="detail-link" href="${escapeHtml(locationLink)}" target="_blank" rel="noopener noreferrer">${escapeHtml(locationName)}</a></p>`
+        : '<p class="detail-empty">目前尚未設定演出地點。</p>'}
     </section>
 
     <section class="detail-section detail-section--source">
@@ -181,6 +180,39 @@ document.querySelectorAll('[data-close-modal]').forEach(element => {
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeModal();
 });
+
+/*主頁-開啟時固定在mainpage，第一次向下滾動時自動定位到latest_event*/
+function setupHomepageScroll() {
+  const mainpage = document.querySelector('#mainpage');
+  const latestEvent = document.querySelector('#latest_event');
+  if (!mainpage || !latestEvent) return;
+
+  /*開啟首頁時回到mainpage最上方*/
+  if (window.location.hash === '') {
+    window.scrollTo(0, 0);
+  }
+
+  let isAutoScrolling = false;
+  let hasSnappedToLatestEvent = false;
+
+  /*首頁測試模式：滑鼠向下滾動時自動前往下一個完整區塊*/
+  mainpage.addEventListener('wheel', event => {
+    if (event.deltaY <= 0 || isAutoScrolling || hasSnappedToLatestEvent) return;
+
+    event.preventDefault();
+    isAutoScrolling = true;
+    hasSnappedToLatestEvent = true;
+
+    latestEvent.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
+    window.setTimeout(() => {
+      isAutoScrolling = false;
+    }, 900);
+  }, { passive: false });
+}
 
 function renderEvents(events) {
   if (!eventList) return;
@@ -291,7 +323,7 @@ function renderSongRanking(events) {
 async function loadEvents() {
   try {
     const dataUrl = new URL('Data/events.json', document.baseURI).href;
-    const response = await fetch(`${dataUrl}?v=10`, { cache: 'no-store' });
+    const response = await fetch(`${dataUrl}?v=11`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`演出資料載入失敗：HTTP ${response.status}`);
 
     const events = await response.json();
@@ -300,6 +332,7 @@ async function loadEvents() {
     renderEvents(events);
     renderUpcomingEvents(events);
     renderSongRanking(events);
+    setupHomepageScroll();
   } catch (error) {
     console.error(error);
     const message = '<p class="section-empty">演出資料暫時無法載入。請稍後重新整理頁面。</p>';
