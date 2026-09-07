@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <!--網頁基本設定-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content=""><!-- 搜尋用Keyword -->
@@ -8,14 +9,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!--全站共用-最上方導覽列-->
   <header class="site-header">
     <nav class="navbar" aria-label="主要導覽">
+      <!--左側-網站名稱/Logo--> 
       <a class="brand" href="index.html" aria-label="回到首頁">
         <div class="brand-logo">
           <span class="brand-logo-fallback">GGteens</span>
         </div>
       </a>
+
+      <!--中間-保留彈性空間--> 
       <div class="nav-spacer" aria-hidden="true"></div>
+
+      <!--右側-網站主要分頁連結--> 
       <div class="site-nav">
         <a href="event_review.html">演出紀錄</a>
         <a href="song_list.html">館青的作品</a>
@@ -25,21 +32,30 @@
   </header>
 
   <main>
+    <!--主頁-mainpage：首頁第一個完整視窗區塊--> 
     <section id="mainpage">
+      <!--主頁-home：左側75%，歡迎文字與背景圖片--> 
       <div class="home">
         <div class="home-copy">
+          <!--主頁-home-主標題--> 
           <h1>跟館青出去走一走</h1>
+          <!--主頁-home-副標題--> 
           <p>今天又要走去哪呢？</p>
         </div>
       </div>
 
+      <!--主頁-news：右側25%，最近大事--> 
       <aside class="news" aria-labelledby="recent-news-title">
+        <!--最近大事-大標題--> 
         <h2 id="recent-news-title">最近大事</h2>
+        <!--最近大事-事件列表--> 
         <div id="news-list" class="news-list">
+          <!--最近大事-事件1--> 
           <article class="news-card">
             <h3>年度專場&nbsp;最終場</h3>
             <p>最終場將於 9/13 舉行。</p>
           </article>
+          <!--最近大事-事件2--> 
           <article class="news-card">
             <h3>貝斯手調整</h3>
             <p>蝦蛄老師自澎大海沙灘音樂祭起暫時接替婉玲。</p>
@@ -48,33 +64,46 @@
       </aside>
     </section>
 
+    <!--主頁-latest_event：顯示最近即將到來的演出--> 
     <section id="latest_event">
+      <!--即將到來的演出-內容容器--> 
       <div class="section-shell latest-event-shell">
+        <!--即將到來的演出-標題與完整紀錄入口--> 
         <div class="section-heading-row latest-event-heading">
           <div>
             <h2 class="section-title">即將到來的演出</h2>
           </div>
           <a class="section-link" href="event_review.html">查看完整演出紀錄 →</a>
         </div>
+
+        <!--即將到來的演出-由script.js動態產生活動--> 
         <div id="upcoming-events" class="upcoming-events-list"></div>
       </div>
     </section>
   </main>
 
+  <!--演出詳細資料-點擊活動後開啟的彈出視窗--> 
   <div id="event-modal" class="modal" aria-hidden="true">
+    <!--彈出視窗-背景遮罩，點擊可關閉--> 
     <div class="modal-backdrop" data-close-modal></div>
+    <!--彈出視窗-主要內容區--> 
     <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <!--彈出視窗-關閉按鈕--> 
       <button class="modal-close" type="button" aria-label="關閉" data-close-modal>×</button>
+      <!--彈出視窗-標題--> 
       <h2 id="modal-title">演出詳細資料</h2>
+      <!--彈出視窗-詳細資料由script.js動態填入--> 
       <div id="modal-content" class="detail-layout"></div>
     </article>
   </div>
 
+  <!--全站共用-頁尾資訊--> 
   <footer class="site-footer">
     <p>本頁面僅用於分享粉絲記錄之&nbsp;公館青少年&nbsp;演出記錄與歌曲作品</p>
 	<p>所有活動安排及歌單資料均以活動主辦及公館青少年公佈為準</p>
   </footer>
 
+  <!--載入共用JavaScript功能--> 
   <script src="script.js"></script>
 </body>
 </html>
