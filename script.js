@@ -275,8 +275,6 @@ function renderUpcomingEvents(events) {
           </div>
           ${hasTime ? `<span class="upcoming-event-time">${escapeHtml(event.end_time ? `${event.time}–${event.end_time}` : event.time)}</span>` : ''}
         </div>
-        <!--主頁-活動卡預留區：目前不放置其他資料--> 
-        <div class="upcoming-event-reserved" aria-hidden="true">此區為<br>保留空白</div>
         <!--主頁-活動名稱、類型與地點--> 
         <div class="upcoming-event-main">
           <h3>${escapeHtml(event.title || '未命名演出')}</h3>
