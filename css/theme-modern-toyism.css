@@ -1,0 +1,590 @@
+/* GGrecord 新版視覺測試層
+ * 目標：Modern Minimal × Neo-Brutalism × Toyism
+ * 範圍：僅覆寫視覺樣式，不改動 HTML 結構、資料或 JavaScript 互動。
+ * 色彩：深青 #0C4755、青黑 #033E4E、灰青 #799098、藍青 #437381。
+ */
+
+:root {
+  --bg: #f7f4ee;
+  --surface: #fffdf8;
+  --text: #05060b;
+  --muted: #52676b;
+  --line: #05060b;
+  --accent: #0c4755;
+  --section-light: #e9eff0;
+  --section-dark: #033e4e;
+  --gg-teal: #0c4755;
+  --gg-deep-teal: #033e4e;
+  --gg-muted-teal: #799098;
+  --gg-blue-teal: #437381;
+  --gg-ink: #05060b;
+  --gg-paper: #f7f4ee;
+  --gg-hard-shadow: 5px 5px 0 var(--gg-ink);
+}
+
+/* 全站：暖白紙感背景、較強字重與一致的版面色彩 */
+body {
+  background: var(--gg-paper);
+  color: var(--gg-ink);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  letter-spacing: 0.005em;
+}
+
+::selection {
+  color: #fffdf8;
+  background: var(--gg-teal);
+}
+
+a,
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gg-blue-teal);
+  outline-offset: 4px;
+}
+
+/* 導覽列：膠囊式深青面板、粗黑邊框與硬陰影 */
+.site-header {
+  top: 14px;
+  left: 2.5%;
+  width: 95%;
+  height: 68px;
+  overflow: visible;
+  color: var(--gg-ink);
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--gg-ink);
+  backdrop-filter: none;
+}
+
+.navbar {
+  height: 64px;
+  padding: 0 24px;
+  gap: 24px;
+}
+
+.brand-logo {
+  min-width: 150px;
+  height: 52px;
+}
+
+.brand-logo-fallback {
+  color: var(--gg-deep-teal);
+  font-size: 29px;
+  letter-spacing: -0.055em;
+}
+
+.site-nav {
+  gap: 10px;
+}
+
+.site-nav a {
+  padding: 9px 14px;
+  color: var(--gg-ink);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: 14px;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: #fffdf8;
+  background: var(--gg-teal);
+  border-color: var(--gg-ink);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+/* 首屏：沿用原背景圖與內容，透過深青色調及貼紙式文字底板改變視覺語言 */
+#mainpage {
+  min-height: 100svh;
+  padding: 0;
+  gap: 0;
+  background: var(--gg-muted-teal);
+}
+
+.home {
+  min-height: 100svh;
+  background-image:
+    linear-gradient(110deg, rgba(3, 62, 78, 0.22), rgba(3, 62, 78, 0.02) 65%),
+    url("../img/mainpage/Main_BG.jpg");
+  background-position: center;
+}
+
+.home-copy {
+  padding: 0 6vw 9vh;
+}
+
+.home-copy h1 {
+  display: table;
+  max-width: min(82%, 900px);
+  padding: 14px 20px 18px;
+  color: var(--gg-ink);
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 var(--gg-teal);
+  font-size: clamp(38px, 5vw, 76px);
+  letter-spacing: -0.045em;
+}
+
+.home-copy p {
+  display: table;
+  max-width: min(75%, 440px);
+  margin-top: 18px;
+  padding: 8px 16px;
+  color: #fffdf8;
+  background: var(--gg-deep-teal);
+  border: 2px solid var(--gg-ink);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--gg-paper);
+  font-size: clamp(18px, 1.7vw, 26px);
+}
+
+/* 最近大事：以藍青色卡片及貼紙標籤取代原本純黑側欄 */
+.news {
+  padding: 112px 2.5vw 48px;
+  color: var(--gg-ink);
+  background: var(--gg-blue-teal);
+  border-left: 2px solid var(--gg-ink);
+}
+
+.news h2 {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 8px 12px;
+  color: var(--gg-ink);
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--gg-ink);
+  font-size: clamp(25px, 2.5vw, 38px);
+}
+
+.news-card {
+  margin-bottom: 14px;
+  padding: 18px 16px;
+  color: var(--gg-ink);
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--gg-ink);
+}
+
+.news-card h3 {
+  font-size: clamp(17px, 1.5vw, 22px);
+}
+
+.news-card p {
+  color: #34494d;
+  font-size: 13px;
+}
+
+/* 即將到來的演出：留出呼吸感，使用硬陰影卡片與深青重點 */
+#latest_event {
+  height: auto;
+  min-height: calc(100svh - 20px);
+  max-height: none;
+  padding: 88px 7vw 72px;
+  overflow: visible;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(121, 144, 152, 0.24) 0 7%, transparent 7.2%),
+    var(--section-light);
+  border-top: 2px solid var(--gg-ink);
+}
+
+.latest-event-shell {
+  height: auto;
+  min-height: 0;
+}
+
+.latest-event-heading {
+  align-items: flex-end;
+  margin-bottom: 28px;
+  padding-top: 0;
+}
+
+.section-title {
+  color: var(--gg-deep-teal);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+}
+
+.section-link {
+  padding: 10px 15px;
+  color: #fffdf8;
+  background: var(--gg-teal);
+  border: 2px solid var(--gg-ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--gg-ink);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.section-link:hover,
+.section-link:focus-visible {
+  opacity: 1;
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--gg-ink);
+}
+
+.upcoming-events-list {
+  gap: 18px;
+}
+
+.upcoming-event-card {
+  min-height: 150px;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(190px, 24%) minmax(0, 1fr) 88px;
+  gap: 20px;
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 14px;
+  box-shadow: var(--gg-hard-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.upcoming-event-card:nth-child(2) {
+  background: #f2f5f2;
+}
+
+.upcoming-event-card:nth-child(3) {
+  background: #e2eaec;
+}
+
+.upcoming-event-card:hover,
+.upcoming-event-card:focus-visible {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 var(--gg-ink);
+}
+
+.upcoming-event-date-block {
+  padding-left: 24px;
+  background: rgba(121, 144, 152, 0.18);
+  border-right: 2px solid var(--gg-ink);
+}
+
+.upcoming-event-date {
+  color: var(--gg-deep-teal);
+  font-weight: 900;
+}
+
+.upcoming-event-weekday {
+  border-left: 2px solid var(--gg-muted-teal);
+}
+
+.upcoming-event-time {
+  color: var(--gg-blue-teal);
+}
+
+.upcoming-event-card h3 {
+  color: var(--gg-deep-teal);
+  font-weight: 900;
+}
+
+.upcoming-event-meta {
+  font-size: clamp(13px, 1.15vw, 16px);
+}
+
+.upcoming-event-fee {
+  border: 1.5px solid var(--gg-ink);
+  border-radius: 999px;
+  color: var(--gg-ink);
+  font-weight: 900;
+}
+
+.upcoming-event-fee--paid {
+  background: #f2dcc2;
+}
+
+.upcoming-event-fee--free {
+  background: #d6e4df;
+}
+
+.upcoming-event-detail {
+  align-self: stretch;
+  padding: 12px 8px;
+  color: #fffdf8;
+  background: var(--gg-teal);
+  border-left: 2px solid var(--gg-ink);
+  font-size: 14px;
+}
+
+/* 彈出視窗：視覺同步為紙感面板，保留原有開關與資料結構 */
+.modal-backdrop {
+  background: rgba(3, 24, 29, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.modal-panel {
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--gg-teal);
+}
+
+.modal-close {
+  border: 2px solid var(--gg-ink);
+  border-radius: 10px;
+  box-shadow: 2px 2px 0 var(--gg-ink);
+}
+
+.modal-close:hover {
+  background: #dce8e9;
+}
+
+.detail-summary {
+  border-color: var(--gg-ink);
+}
+
+.detail-summary-item {
+  border-color: rgba(5, 6, 11, 0.24);
+}
+
+.detail-link {
+  color: var(--gg-teal);
+  text-decoration-thickness: 2px;
+}
+
+/* 全站其他資料卡：在演出紀錄、作品與年度回顧中延續相同視覺系統 */
+.card,
+.event-item,
+.song-database-item,
+.recap-card {
+  background: var(--gg-paper);
+  border: 2px solid var(--gg-ink);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--gg-ink);
+}
+
+.event-item:hover,
+.event-item:focus-visible {
+  background: #e7eff0;
+}
+
+.page-title,
+.recap-section-title {
+  color: var(--gg-deep-teal);
+  font-weight: 900;
+}
+
+.site-footer {
+  padding-top: 36px;
+  color: var(--muted);
+}
+
+/* 平板與手機：取消首屏雙欄硬擠，確保導覽、活動卡及文字可閱讀 */
+@media (max-width: 900px) {
+  .site-header {
+    top: 10px;
+    left: 2%;
+    width: 96%;
+  }
+
+  #mainpage {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .home {
+    min-height: 72svh;
+  }
+
+  .news {
+    min-height: auto;
+    padding: 36px 28px 40px;
+    border-left: 0;
+    border-top: 2px solid var(--gg-ink);
+  }
+
+  .news-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .news-card {
+    margin-bottom: 0;
+  }
+
+  #latest_event {
+    padding: 72px 24px 56px;
+  }
+
+  .upcoming-event-card {
+    grid-template-columns: minmax(150px, 28%) minmax(0, 1fr) 72px;
+    gap: 12px;
+  }
+
+  .upcoming-event-date-block {
+    padding: 16px 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    top: 8px;
+    left: 3%;
+    width: 94%;
+    height: auto;
+    min-height: 60px;
+    border-radius: 14px;
+  }
+
+  .navbar {
+    min-height: 56px;
+    height: auto;
+    padding: 8px 10px;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+  }
+
+  .brand-logo {
+    min-width: 0;
+    height: auto;
+  }
+
+  .brand-logo-fallback {
+    font-size: 20px;
+  }
+
+  .site-nav {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .site-nav a {
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+
+  .home {
+    min-height: 66svh;
+    background-position: 56% center;
+  }
+
+  .home-copy {
+    padding: 0 22px 36px;
+  }
+
+  .home-copy h1 {
+    max-width: 100%;
+    padding: 10px 12px 12px;
+    font-size: clamp(30px, 9vw, 44px);
+    box-shadow: 4px 4px 0 var(--gg-teal);
+  }
+
+  .home-copy p {
+    max-width: 100%;
+    margin-top: 14px;
+    font-size: 17px;
+  }
+
+  .news {
+    padding: 32px 20px;
+  }
+
+  .news-list {
+    grid-template-columns: 1fr;
+  }
+
+  #latest_event {
+    min-height: 0;
+    padding: 60px 18px 48px;
+  }
+
+  .latest-event-heading {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .section-title {
+    font-size: 38px;
+  }
+
+  .section-link {
+    font-size: 13px;
+  }
+
+  .upcoming-events-list {
+    gap: 16px;
+  }
+
+  .upcoming-event-card {
+    grid-template-columns: 1fr auto;
+    gap: 0;
+    border-radius: 12px;
+  }
+
+  .upcoming-event-date-block {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-right: 0;
+    border-bottom: 2px solid var(--gg-ink);
+  }
+
+  .upcoming-event-date-row {
+    gap: 10px;
+  }
+
+  .upcoming-event-date {
+    font-size: 34px;
+  }
+
+  .upcoming-event-time {
+    margin-left: auto;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .upcoming-event-main {
+    padding: 18px 16px;
+  }
+
+  .upcoming-event-card h3 {
+    font-size: 21px;
+  }
+
+  .upcoming-event-meta {
+    gap: 7px 10px;
+    font-size: 13px;
+  }
+
+  .upcoming-event-detail {
+    align-self: stretch;
+    padding: 12px 8px;
+    border-left: 2px solid var(--gg-ink);
+    font-size: 12px;
+  }
+
+  .modal-panel {
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 var(--gg-teal);
+  }
+
+  .site-footer {
+    padding: 28px 18px 40px;
+  }
+}
+
+/* 尊重使用者的減少動態效果設定 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
